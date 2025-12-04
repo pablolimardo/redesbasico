@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia de Redes | Mapa Mental Interactivo</title>
+    <!-- Incluyendo Tailwind CSS CDN para un diseño rápido y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3b82f6; /* Blue-500 */
+            --secondary-color: #10b981; /* Emerald-500 */
+            --bg-dark: #1f2937; /* Gray-800 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Fondo claro general */
+        }
+        .sidebar {
+            background-color: var(--bg-dark);
+        }
+        .sidebar a {
+            transition: all 0.2s;
+        }
+        .sidebar a:hover {
+            background-color: #374151; /* Gray-700 */
+        }
+        .active-topic {
+            background-color: var(--primary-color) !important;
+            color: white;
+            font-weight: 600;
+        }
+        .main-card {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app" class="min-h-screen flex flex-col md:flex-row">
+        <!-- Sidebar (Menú de Navegación) -->
+        <div class="sidebar w-full md:w-64 p-4 text-white">
+            <h1 class="text-2xl font-bold mb-6 border-b border-gray-700 pb-3 text-white">
+                🎓 Academia de Redes
+            </h1>
+            <nav id="nav-container">
+                <!-- El menú se generará dinámicamente aquí -->
+            </nav>
+        </div>
+
+        <!-- Área Principal de Contenido -->
+        <main class="flex-1 p-6 md:p-10">
+            <div id="content-container" class="main-card bg-white rounded-xl p-6 md:p-8">
+                <h2 class="text-3xl font-extrabold text-gray-800 mb-4" id="content-title">
+                    ¡Bienvenido/a a tu Curso Interactivo de Redes!
+                </h2>
+                <p class="text-gray-600 mb-6" id="content-intro">
+                    Usá el menú de la izquierda para explorar los temas del mapa mental. Hacé clic en cualquier tema para ver el contenido, una imagen ilustrativa y una pregunta para practicar. ¡Empecemos!
+                </p>
+
+                <div id="topic-content" class="space-y-6 hidden">
+                    <!-- Contenido Principal -->
+                    <section class="border-l-4 border-primary-color pl-4">
+                        <h3 class="text-2xl font-semibold text-gray-700 mb-3">Concepto Clave</h3>
+                        <p class="text-gray-600 leading-relaxed" id="topic-text"></p>
+                    </section>
+
+                    <!-- Imagen Ilustrativa (Placeholder for conceptual diagrams) -->
+                    <div id="topic-image-container" class="bg-gray-100 p-4 rounded-lg flex justify-center items-center text-center text-sm text-gray-500 border border-dashed border-gray-300">
+                        <!-- El texto del diagrama aparecerá acá -->
+                    </div>
+
+                    <!-- Sección Interactiva/Desafío -->
+                    <section class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-2 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M12 20v-1m-6.364-1.636l.707-.707M5 12H4m15 0h-1M9 12a3 3 0 11-6 0 3 3 0 016 0zm-3 3h.01"></path></svg>
+                            ¡Poné a Prueba tu Conocimiento!
+                        </h3>
+                        <p class="text-gray-800 italic" id="topic-challenge"></p>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Datos basados en el mapa mental
+        const learningContent = {
+            "fundamentos": {
+                title: "Fundamentos de Redes",
+                subtopics: {
+                    "conceptos": {
+                        title: "Conceptos Básicos",
+                        content: "Una red es un conjunto de dispositivos conectados que comparten recursos e información. Los tipos principales son LAN (área local), WAN (área extensa) y MAN (área metropolitana). Los componentes clave incluyen dispositivos finales (PCs, servidores), medios de conexión (cables/ondas) y servicios de red.",
+                        interactive: "Pensá en tu casa: ¿qué dispositivos serían finales y cuál es el medio de conexión principal que usás?",
+                        image_query: "Diagrama de Tipos de Redes (LAN, WAN, MAN)"
+                    },
+                    "topologias": {
+                        title: "Topologías de Red",
+                        content: "La topología define la disposición física o lógica de los dispositivos. La topología **Estrella** (la más común) usa un nodo central (como un switch). La **Bus** conecta todo a un cable principal. La **Anillo** forma un círculo. La **Malla** conecta cada dispositivo con todos los demás (alta redundancia).",
+                        interactive: "Si se cae el nodo central en una topología Estrella, ¿qué pasa con el resto de la red?",
+                        image_query: "Diagrama de Topologías de Red (Estrella, Bus, Anillo, Malla)"
+                    },
+                    "medios": {
+                        title: "Medios de Transmisión",
+                        content: "Se clasifican en guiados (cobre, fibra óptica) y no guiados (inalámbricos). El **Cable de Cobre UTP** es el más usado en LAN, económico pero sensible a interferencias. La **Fibra Óptica** usa luz, ofrece mayor velocidad y distancia, pero es más cara. Las redes **Inalámbricas** (Wi-Fi) usan ondas de radio.",
+                        interactive: "Para conectar dos edificios a 5 km de distancia, ¿qué medio sería ideal y por qué?",
+                        image_query: "Diagrama de Cable de Cobre y Fibra Óptica"
+                    },
+                }
+            },
+            "modelos": {
+                title: "Modelos de Redes",
+                subtopics: {
+                    "osi": {
+                        title: "Modelo OSI",
+                        content: "Es un marco teórico de 7 capas que describe cómo la información viaja por una red. Va de la Capa 1 (Física, cables/bits) a la Capa 7 (Aplicación, software de usuario). Es esencial para entender la interoperabilidad. ",
+                        interactive: "¿En qué capa OSI se encuentra el switch y el router, respectivamente?",
+                        image_query: "Modelo OSI 7 Capas"
+                    },
+                    "tcpip": {
+                        title: "Modelo TCP/IP",
+                        content: "Es el modelo práctico de 4 o 5 capas usado en Internet. Incluye protocolos fundamentales como **IP** (direccionamiento), **TCP** (conexión confiable) y **UDP** (conexión sin estado rápido).",
+                        interactive: "Si estás viendo un video por streaming, ¿es mejor usar TCP o UDP? ¿Por qué?",
+                        image_query: "Modelo TCP/IP 4 Capas"
+                    },
+                }
+            },
+            "direccionamiento": {
+                title: "Direccionamiento",
+                subtopics: {
+                    "ipv4": {
+                        title: "Direccionamiento IPv4 y Subnetting",
+                        content: "IPv4 usa direcciones de 32 bits (ej. 192.168.1.1). Una dirección se divide en una parte de Red y una de Host, definidas por la **Máscara de Subred**. El **Subnetting** es el arte de dividir una red grande en subredes más pequeñas para una gestión eficiente y seguridad.",
+                        interactive: "Dada la dirección 192.168.10.0 con máscara 255.255.255.0, ¿cuál es el rango de hosts disponibles?",
+                        image_query: "Estructura de una dirección IPv4 y Máscara de Subred"
+                    },
+                    "ipv6": {
+                        title: "Direccionamiento IPv6",
+                        content: "Es la evolución de IPv4, usando 128 bits. Esto proporciona una cantidad virtualmente ilimitada de direcciones, resolviendo el problema del agotamiento de IPv4. Su formato es hexadecimal (ej. 2001:db8::1).",
+                        interactive: "Mencioná una ventaja de IPv6 sobre IPv4, aparte de la cantidad de direcciones.",
+                        image_query: "Estructura de una dirección IPv6"
+                    },
+                    "mac": {
+                        title: "Direcciones MAC",
+                        content: "La MAC (Media Access Control) es una dirección física de 48 bits grabada en la tarjeta de red (NIC). Opera en la Capa 2 (Enlace de Datos) del modelo OSI y es usada por los switches para reenviar tramas localmente. Es única a nivel mundial.",
+                        interactive: "¿Qué dispositivo de red utiliza la dirección MAC para funcionar?",
+                        image_query: "Estructura de una dirección MAC"
+                    },
+                }
+            },
+            "hardware_software": {
+                title: "Hardware y Software de Red",
+                subtopics: {
+                    "hardware": {
+                        title: "Dispositivos de Hardware",
+                        content: "El **Router** opera en Capa 3 (Red) y conecta diferentes redes (ej. tu red local a Internet). El **Switch** opera en Capa 2 (Enlace) y conecta dispositivos dentro de la misma red. El **Hub** es un dispositivo obsoleto de Capa 1 que simplemente repite señales.",
+                        interactive: "Si quiero conectar dos oficinas geográficamente separadas, ¿necesito un Switch o un Router?",
+                        image_query: "Diferencia entre Router, Switch y Hub"
+                    },
+                    "software": {
+                        title: "Software y Herramientas",
+                        content: "Los **NOS (Network Operating Systems)** son software especializado para gestionar y controlar recursos de red (ej. Windows Server, Cisco IOS). Herramientas como **Wireshark** permiten analizar el tráfico de red (paquetes) y **Ping** se usa para probar la conectividad.",
+                        interactive: "Si tenés problemas para conectarte a un sitio web, ¿qué herramienta usarías primero para descartar un problema de conectividad básica?",
+                        image_query: "Captura de pantalla de Wireshark analizando tráfico de red"
+                    },
+                }
+            },
+        };
+
+        const navContainer = document.getElementById('nav-container');
+        const contentContainer = document.getElementById('content-container');
+        const topicContentDiv = document.getElementById('topic-content');
+        const contentTitle = document.getElementById('content-title');
+        const contentIntro = document.getElementById('content-intro');
+        const topicText = document.getElementById('topic-text');
+        const topicChallenge = document.getElementById('topic-challenge');
+        const topicImageContainer = document.getElementById('topic-image-container');
+
+        let currentActiveElement = null;
+
+        // Función para renderizar el menú
+        function renderNav() {
+            for (const categoryKey in learningContent) {
+                const category = learningContent[categoryKey];
+                
+                // Título de la Categoría Principal
+                const categoryHeader = document.createElement('h2');
+                categoryHeader.className = 'text-gray-300 uppercase tracking-wider text-sm font-bold mt-4 mb-2';
+                categoryHeader.textContent = category.title;
+                navContainer.appendChild(categoryHeader);
+
+                // Lista de Subtemas
+                for (const subtopicKey in category.subtopics) {
+                    const subtopic = category.subtopics[subtopicKey];
+                    const link = document.createElement('a');
+                    link.href = '#';
+                    link.className = 'flex items-center px-4 py-2 rounded-lg text-sm text-gray-200 hover:bg-gray-700';
+                    link.textContent = subtopic.title;
+                    link.dataset.category = categoryKey;
+                    link.dataset.topic = subtopicKey;
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadContent(categoryKey, subtopicKey, link);
+                    });
+                    navContainer.appendChild(link);
+                }
+            }
+        }
+
+        // Función para cargar el contenido del tema seleccionado
+        function loadContent(categoryKey, topicKey, clickedElement) {
+            const topicData = learningContent[categoryKey].subtopics[topicKey];
+
+            // 1. Marcar el elemento activo en el menú
+            if (currentActiveElement) {
+                currentActiveElement.classList.remove('active-topic');
+            }
+            clickedElement.classList.add('active-topic');
+            currentActiveElement = clickedElement;
+
+            // 2. Mostrar el área de contenido si estaba oculta
+            if (topicContentDiv.classList.contains('hidden')) {
+                topicContentDiv.classList.remove('hidden');
+                contentIntro.classList.add('hidden');
+            }
+
+            // 3. Actualizar el Título
+            contentTitle.textContent = topicData.title;
+
+            // 4. Actualizar el Contenido (Texto)
+            // Se corrige el error eliminando la expresión regular inválida.
+            topicText.innerHTML = topicData.content; 
+
+            // 5. Actualizar la Imagen Ilustrativa (usando image_query como fuente)
+            if (topicData.image_query) {
+                 topicImageContainer.innerHTML = `
+                    <div class="p-6 bg-white rounded-lg border-2 border-blue-200 border-dashed flex flex-col items-center">
+                        <span class="text-lg font-mono text-gray-800">Diagrama conceptual de:</span>
+                        <p class="mt-2 text-base font-semibold text-blue-600">${topicData.image_query}</p>
+                    </div>
+                `;
+            } else {
+                topicImageContainer.innerHTML = `<p>No hay diagrama específico para este tema, ¡pero el contenido está buenísimo igual!</p>`;
+            }
+
+            // 6. Actualizar la Pregunta Interactiva
+            topicChallenge.textContent = topicData.interactive;
+        }
+
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', () => {
+            renderNav();
+        });
+    </script>
+
+</body>
+</html>
