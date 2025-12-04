@@ -3,201 +3,1626 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academia de Redes | Mapa Mental Interactivo</title>
-    <!-- Incluyendo Tailwind CSS CDN para un diseño rápido y responsivo -->
+    <title>🌐 Academia de Redes | Aprendé Conectando</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #3b82f6; /* Blue-500 */
-            --secondary-color: #10b981; /* Emerald-500 */
-            --bg-dark: #1f2937; /* Gray-800 */
+            --primary: #06b6d4;
+            --secondary: #8b5cf6;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
         }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Fondo claro general */
+            overflow-x: hidden;
         }
+
+        /* BACKGROUND ANIMADO DE RED */
+        #network-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+
+        .network-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+        }
+
+        /* SIDEBAR CON ESTILO CYBER */
         .sidebar {
-            background-color: var(--bg-dark);
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            border-right: 2px solid var(--primary);
+            box-shadow: 5px 0 20px rgba(6, 182, 212, 0.3);
         }
-        .sidebar a {
-            transition: all 0.2s;
+
+        .sidebar h1 {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px var(--primary);
         }
-        .sidebar a:hover {
-            background-color: #374151; /* Gray-700 */
+
+        .nav-link {
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
         }
+
+        .nav-link:hover {
+            background: rgba(6, 182, 212, 0.1);
+            border-left-color: var(--primary);
+            transform: translateX(5px);
+        }
+
         .active-topic {
-            background-color: var(--primary-color) !important;
-            color: white;
+            background: linear-gradient(90deg, rgba(6, 182, 212, 0.2), transparent) !important;
+            border-left-color: var(--primary) !important;
             font-weight: 600;
         }
-        .main-card {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+        /* CARD PRINCIPAL CON EFECTO GLASS */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ANIMACIÓN DE PULSO PARA ELEMENTOS */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px var(--primary); }
+            50% { box-shadow: 0 0 20px var(--primary); }
+        }
+
+        .pulse-border {
+            animation: pulse-glow 2s infinite;
+        }
+
+        /* BADGES Y TAGS */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-layer { background: #8b5cf6; color: white; }
+        .badge-protocol { background: #06b6d4; color: white; }
+        .badge-device { background: #f59e0b; color: white; }
+        .badge-advanced { background: #ef4444; color: white; }
+
+        /* CONTENEDOR DE DIAGRAMAS */
+        .diagram-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border: 2px dashed var(--primary);
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diagram-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 15px;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        /* SECCIÓN INTERACTIVA */
+        .challenge-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 5px solid var(--accent);
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .challenge-box::before {
+            content: '💡';
+            position: absolute;
+            top: -15px;
+            left: 15px;
+            font-size: 2rem;
+            background: white;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        /* CÓDIGO Y EJEMPLOS */
+        .code-example {
+            background: #1e293b;
+            color: #06b6d4;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            border: 1px solid var(--primary);
+        }
+
+        /* ANIMACIÓN DE ENTRADA */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SCROLLBAR PERSONALIZADO */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        /* BOTÓN DE VOLVER */
+        .back-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(6, 182, 212, 0.4);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6);
+        }
+
+        /* ICONOS SVG INLINE */
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                border-right: none;
+                border-bottom: 2px solid var(--primary);
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- BACKGROUND ANIMADO -->
+    <div id="network-bg">
+        <canvas id="networkCanvas" class="network-canvas"></canvas>
+    </div>
+
     <div id="app" class="min-h-screen flex flex-col md:flex-row">
-        <!-- Sidebar (Menú de Navegación) -->
-        <div class="sidebar w-full md:w-64 p-4 text-white">
-            <h1 class="text-2xl font-bold mb-6 border-b border-gray-700 pb-3 text-white">
-                🎓 Academia de Redes
+        <!-- SIDEBAR -->
+        <div class="sidebar w-full md:w-80 p-6 text-white">
+            <h1 class="text-3xl font-bold mb-2 text-center">
+                🌐 ACADEMIA DE REDES
             </h1>
-            <nav id="nav-container">
-                <!-- El menú se generará dinámicamente aquí -->
+            <p class="text-center text-cyan-300 text-sm mb-6 font-semibold">
+                Conectando Conocimiento
+            </p>
+            
+            <div class="bg-cyan-900/30 rounded-lg p-3 mb-6 border border-cyan-500/30">
+                <p class="text-xs text-cyan-200">
+                    <strong>🎯 Objetivo:</strong> Dominar los fundamentos de redes de computadoras
+                </p>
+            </div>
+
+            <nav id="nav-container" class="space-y-1">
+                <!-- Menú se genera dinámicamente -->
             </nav>
+
+            <div class="mt-8 p-4 bg-purple-900/30 rounded-lg border border-purple-500/30">
+                <p class="text-xs text-purple-200">
+                    💪 <strong>Tip Pro:</strong> Hacé cada desafío antes de pasar al siguiente tema
+                </p>
+            </div>
         </div>
 
-        <!-- Área Principal de Contenido -->
-        <main class="flex-1 p-6 md:p-10">
-            <div id="content-container" class="main-card bg-white rounded-xl p-6 md:p-8">
-                <h2 class="text-3xl font-extrabold text-gray-800 mb-4" id="content-title">
-                    ¡Bienvenido/a a tu Curso Interactivo de Redes!
-                </h2>
-                <p class="text-gray-600 mb-6" id="content-intro">
-                    Usá el menú de la izquierda para explorar los temas del mapa mental. Hacé clic en cualquier tema para ver el contenido, una imagen ilustrativa y una pregunta para practicar. ¡Empecemos!
-                </p>
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="flex-1 p-6 md:p-10 relative">
+            <div id="content-container" class="glass-card p-8 md:p-10 max-w-5xl mx-auto fade-in">
+                <!-- PANTALLA DE BIENVENIDA -->
+                <div id="welcome-screen">
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+                        ¡Bienvenido/a a tu Laboratorio Virtual! 🚀
+                    </h2>
+                    <p class="text-xl text-gray-600 mb-8">
+                        Estás a punto de adentrarte en el fascinante mundo de las redes de computadoras. 
+                        Acá vas a aprender cómo se comunican los dispositivos, desde tu celular hasta los servidores de todo el planeta.
+                    </p>
 
-                <div id="topic-content" class="space-y-6 hidden">
-                    <!-- Contenido Principal -->
-                    <section class="border-l-4 border-primary-color pl-4">
-                        <h3 class="text-2xl font-semibold text-gray-700 mb-3">Concepto Clave</h3>
-                        <p class="text-gray-600 leading-relaxed" id="topic-text"></p>
-                    </section>
-
-                    <!-- Imagen Ilustrativa (Placeholder for conceptual diagrams) -->
-                    <div id="topic-image-container" class="bg-gray-100 p-4 rounded-lg flex justify-center items-center text-center text-sm text-gray-500 border border-dashed border-gray-300">
-                        <!-- El texto del diagrama aparecerá acá -->
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-gradient-to-br from-cyan-50 to-cyan-100 p-6 rounded-xl border-2 border-cyan-300">
+                            <div class="text-4xl mb-3">📚</div>
+                            <h3 class="font-bold text-cyan-900 mb-2">5 Módulos</h3>
+                            <p class="text-sm text-cyan-700">Contenido organizado y progresivo</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border-2 border-purple-300">
+                            <div class="text-4xl mb-3">💡</div>
+                            <h3 class="font-bold text-purple-900 mb-2">Desafíos</h3>
+                            <p class="text-sm text-purple-700">Preguntas para pensar y aplicar</p>
+                        </div>
+                        <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-6 rounded-xl border-2 border-amber-300">
+                            <div class="text-4xl mb-3">🎯</div>
+                            <h3 class="font-bold text-amber-900 mb-2">Práctico</h3>
+                            <p class="text-sm text-amber-700">Ejemplos del mundo real</p>
+                        </div>
                     </div>
 
-                    <!-- Sección Interactiva/Desafío -->
-                    <section class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
-                        <h3 class="text-xl font-semibold text-blue-700 mb-2 flex items-center">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M12 20v-1m-6.364-1.636l.707-.707M5 12H4m15 0h-1M9 12a3 3 0 11-6 0 3 3 0 016 0zm-3 3h.01"></path></svg>
-                            ¡Poné a Prueba tu Conocimiento!
+                    <div class="bg-gradient-to-r from-cyan-500 to-purple-600 text-white p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold mb-3">🎮 ¿Cómo usar esta app?</h3>
+                        <ol class="space-y-2 text-sm">
+                            <li><strong>1.</strong> Elegí un tema del menú izquierdo</li>
+                            <li><strong>2.</strong> Leé el contenido con atención</li>
+                            <li><strong>3.</strong> Mirá el diagrama conceptual</li>
+                            <li><strong>4.</strong> Respondé el desafío mentalmente o en tu carpeta</li>
+                            <li><strong>5.</strong> Pasá al siguiente tema cuando te sientas seguro/a</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- CONTENIDO DEL TEMA -->
+                <div id="topic-content" class="hidden fade-in">
+                    <!-- Header del Tema -->
+                    <div class="mb-8">
+                        <div class="flex items-center gap-3 mb-4">
+                            <span id="topic-icon" class="text-5xl"></span>
+                            <div>
+                                <h2 id="content-title" class="text-4xl font-extrabold text-gray-800"></h2>
+                                <div id="topic-badges" class="mt-2 flex gap-2"></div>
+                            </div>
+                        </div>
+                        <p id="topic-subtitle" class="text-lg text-gray-600 italic"></p>
+                    </div>
+
+                    <!-- Contenido Principal -->
+                    <section class="mb-8">
+                        <div class="border-l-4 border-cyan-500 pl-6 bg-cyan-50/50 py-4 rounded-r-lg">
+                            <h3 class="text-2xl font-bold text-cyan-900 mb-4 flex items-center gap-2">
+                                📖 Concepto Clave
+                            </h3>
+                            <div id="topic-text" class="text-gray-700 leading-relaxed space-y-4"></div>
+                        </div>
+                    </section>
+
+                    <!-- Ejemplo Práctico -->
+                    <section id="example-section" class="mb-8 hidden">
+                        <div class="bg-green-50 border-2 border-green-300 rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-green-800 mb-3 flex items-center gap-2">
+                                ⚙️ Ejemplo Práctico
+                            </h3>
+                            <div id="topic-example" class="text-gray-700"></div>
+                        </div>
+                    </section>
+
+                    <!-- Código/Comando -->
+                    <section id="code-section" class="mb-8 hidden">
+                        <h3 class="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
+                            💻 En la Práctica
                         </h3>
-                        <p class="text-gray-800 italic" id="topic-challenge"></p>
+                        <pre id="topic-code" class="code-example"></pre>
+                    </section>
+
+                    <!-- Diagrama Visual -->
+                    <section class="mb-8">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            🎨 Representación Visual
+                        </h3>
+                        <div id="topic-image-container" class="diagram-box">
+                            <!-- Diagrama aquí -->
+                        </div>
+                    </section>
+
+                    <!-- Desafío Interactivo -->
+                    <section class="challenge-box">
+                        <h3 class="text-xl font-bold text-amber-900 mb-3 pt-3 flex items-center gap-2">
+                            🧠 ¡Poné a Prueba tu Conocimiento!
+                        </h3>
+                        <p id="topic-challenge" class="text-gray-800 font-medium"></p>
+                        <div class="mt-4 p-3 bg-white/70 rounded-lg">
+                            <p class="text-sm text-gray-600">
+                                💭 <strong>Tip:</strong> Anotá tu respuesta en la carpeta y discutila con tus compañeros
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- Datos Curiosos -->
+                    <section id="fun-fact-section" class="mt-8 hidden">
+                        <div class="bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-300 rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-purple-900 mb-3 flex items-center gap-2">
+                                🎪 ¿Sabías que...?
+                            </h3>
+                            <p id="fun-fact" class="text-gray-700"></p>
+                        </div>
                     </section>
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- BOTÓN PARA VOLVER -->
+    <div id="back-to-top" class="back-btn hidden" title="Volver arriba">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+        </svg>
+    </div>
+
     <script>
-        // Datos basados en el mapa mental
+        // =====================================
+        // ANIMACIÓN DE BACKGROUND (RED DE NODOS)
+        // =====================================
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const nodes = [];
+        const nodeCount = 50;
+        const maxDistance = 150;
+
+        class Node {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = 2;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#06b6d4';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < nodeCount; i++) {
+            nodes.push(new Node());
+        }
+
+        function connectNodes() {
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < maxDistance) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = `rgba(6, 182, 212, ${1 - distance / maxDistance})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            nodes.forEach(node => {
+                node.update();
+                node.draw();
+            });
+
+            connectNodes();
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // =====================================
+        // DATOS DE CONTENIDO (MEJORADO Y EXPANDIDO)
+        // =====================================
         const learningContent = {
             "fundamentos": {
-                title: "Fundamentos de Redes",
+                title: "🏗️ Fundamentos de Redes",
                 subtopics: {
                     "conceptos": {
                         title: "Conceptos Básicos",
-                        content: "Una red es un conjunto de dispositivos conectados que comparten recursos e información. Los tipos principales son LAN (área local), WAN (área extensa) y MAN (área metropolitana). Los componentes clave incluyen dispositivos finales (PCs, servidores), medios de conexión (cables/ondas) y servicios de red.",
-                        interactive: "Pensá en tu casa: ¿qué dispositivos serían finales y cuál es el medio de conexión principal que usás?",
-                        image_query: "Diagrama de Tipos de Redes (LAN, WAN, MAN)"
+                        icon: "🌐",
+                        subtitle: "¿Qué es una red y por qué existen?",
+                        badges: ["Básico", "Teórico"],
+                        content: `
+                            <p>Una <strong>red de computadoras</strong> es un conjunto de dispositivos interconectados que pueden comunicarse y compartir recursos entre sí. Pensá en tu casa: tu celular, tu compu, la tele smart y la notebook están todos conectados a través del Wi-Fi del router. Esa es una red.</p>
+                            
+                            <p><strong>¿Por qué son importantes las redes?</strong></p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Compartir Recursos:</strong> Podés usar una impresora desde cualquier dispositivo sin cables</li>
+                                <li><strong>Comunicación:</strong> WhatsApp, Instagram, TikTok... todo funciona gracias a las redes</li>
+                                <li><strong>Acceso a Internet:</strong> Tu red local se conecta a redes gigantes que forman Internet</li>
+                                <li><strong>Trabajo Colaborativo:</strong> Varios pueden editar un documento de Google Docs al mismo tiempo</li>
+                            </ul>
+
+                            <p><strong>Tipos de Redes según su Alcance:</strong></p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>PAN (Personal Area Network):</strong> Tu celular conectado a tus auriculares Bluetooth</li>
+                                <li><strong>LAN (Local Area Network):</strong> La red de tu casa o de la escuela (alcance: ~100 metros)</li>
+                                <li><strong>MAN (Metropolitan Area Network):</strong> Red que conecta edificios en una ciudad</li>
+                                <li><strong>WAN (Wide Area Network):</strong> Conecta ciudades o países. Internet es la WAN más grande</li>
+                            </ul>
+
+                            <p><strong>Componentes de una Red:</strong></p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Dispositivos Finales (Hosts):</strong> Computadoras, celulares, servidores</li>
+                                <li><strong>Dispositivos Intermedios:</strong> Routers, switches, access points</li>
+                                <li><strong>Medios de Transmisión:</strong> Cables (cobre, fibra) o señales inalámbricas</li>
+                            </ul>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - La Red de tu Escuela:</strong></p>
+                            <p>En nuestra escuela tenemos una LAN que conecta todas las computadoras de los laboratorios, las notebooks de los profes y los proyectores. Todos estos dispositivos pueden compartir archivos en la carpeta del servidor y acceder a Internet a través del mismo router principal.</p>
+                            <p>Cuando enviás un archivo a la impresora del taller, ese archivo viaja por la red local hasta llegar a la impresora. ¡Eso es una red funcionando!</p>
+                        `,
+                        image_query: "Diagrama de LAN, MAN y WAN con dispositivos conectados",
+                        interactive: "Mirá a tu alrededor: ¿Cuántos dispositivos conectados a una red podés identificar en este momento? ¿Son parte de una LAN o están conectados directamente a Internet (WAN)?",
+                        funFact: "El concepto de 'red de computadoras' nació en 1969 con ARPANET, que conectaba solo 4 computadoras. Hoy, Internet conecta más de 5 mil millones de dispositivos en todo el mundo."
                     },
                     "topologias": {
                         title: "Topologías de Red",
-                        content: "La topología define la disposición física o lógica de los dispositivos. La topología **Estrella** (la más común) usa un nodo central (como un switch). La **Bus** conecta todo a un cable principal. La **Anillo** forma un círculo. La **Malla** conecta cada dispositivo con todos los demás (alta redundancia).",
-                        interactive: "Si se cae el nodo central en una topología Estrella, ¿qué pasa con el resto de la red?",
-                        image_query: "Diagrama de Topologías de Red (Estrella, Bus, Anillo, Malla)"
+                        icon: "🔷",
+                        subtitle: "¿Cómo se organizan los dispositivos en una red?",
+                        badges: ["Básico", "Diseño"],
+                        content: `
+                            <p>La <strong>topología de red</strong> es la forma en que los dispositivos están conectados entre sí, tanto física como lógicamente. Es como el "mapa" de la red.</p>
+                            
+                            <p><strong>1. Topología de Bus:</strong></p>
+                            <p>Todos los dispositivos se conectan a un <strong>cable principal</strong> (el "bus"). Es como un colectivo: todos suben al mismo vehículo.</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>✅ <strong>Ventaja:</strong> Simple y económica para redes pequeñas</li>
+                                <li>❌ <strong>Desventaja:</strong> Si el cable principal se rompe, toda la red se cae</li>
+                                <li>📉 Casi no se usa hoy en día</li>
+                            </ul>
+
+                            <p><strong>2. Topología de Anillo:</strong></p>
+                            <p>Los dispositivos forman un <strong>círculo cerrado</strong>. Los datos viajan en una dirección (o ambas en "anillo doble").</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>✅ <strong>Ventaja:</strong> Rendimiento predecible</li>
+                                <li>❌ <strong>Desventaja:</strong> Si un dispositivo falla, puede romper el anillo</li>
+                                <li>📊 Se usaba en redes Token Ring (obsoletas)</li>
+                            </ul>
+
+                            <p><strong>3. Topología de Estrella (⭐ MÁS COMÚN):</strong></p>
+                            <p>Todos los dispositivos se conectan a un <strong>nodo central</strong> (switch o hub). Es la topología que usamos en casa y en la escuela.</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>✅ <strong>Ventajas:</strong> Fácil de gestionar, si un cable falla solo afecta a un dispositivo</li>
+                                <li>❌ <strong>Desventaja:</strong> Si el switch central falla, toda la red se cae</li>
+                                <li>🏆 <strong>Uso actual:</strong> 99% de las redes LAN modernas</li>
+                            </ul>
+
+                            <p><strong>4. Topología de Malla (Mesh):</strong></p>
+                            <p>Cada dispositivo se conecta con <strong>varios otros</strong> (o con todos). Es como tener múltiples caminos para llegar a un lugar.</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>✅ <strong>Ventajas:</strong> Máxima redundancia y confiabilidad</li>
+                                <li>❌ <strong>Desventaja:</strong> Muy costosa (muchos cables/conexiones)</li>
+                                <li>🌐 <strong>Uso:</strong> Internet es una malla gigante, redes militares</li>
+                            </ul>
+
+                            <p><strong>5. Topología Híbrida:</strong></p>
+                            <p>Combina varias topologías. Por ejemplo, varias estrellas conectadas entre sí formando un árbol.</p>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - WiFi de Casa:</strong></p>
+                            <p>Tu casa tiene una topología de <strong>estrella</strong>: todos los dispositivos (celular, notebook, Smart TV, Play) se conectan al router WiFi. Si se cae el router, todos pierden conexión, pero si tu celular tiene problemas, los demás siguen andando.</p>
+                        `,
+                        code: `# Analogía con Python - Topología de Estrella
+# El router es el "hub central"
+
+router = "Router Central"
+dispositivos = ["Celular", "Notebook", "Smart TV", "Play"]
+
+for dispositivo in dispositivos:
+    print(f"{dispositivo} → {router}")
+
+# Salida:
+# Celular → Router Central
+# Notebook → Router Central
+# Smart TV → Router Central
+# Play → Router Central`,
+                        image_query: "Comparación visual de topologías: Bus, Anillo, Estrella y Malla",
+                        interactive: "Dibujá en tu carpeta la topología de red de tu casa: ¿Cuántos dispositivos se conectan a tu router? ¿Qué pasaría si el router se rompe?",
+                        funFact: "Las redes Mesh WiFi son tendencia ahora. Tenés varios 'routers' en tu casa que se hablan entre sí, eliminando las zonas sin señal. ¡Es como tener una malla dentro de tu LAN!"
                     },
                     "medios": {
                         title: "Medios de Transmisión",
-                        content: "Se clasifican en guiados (cobre, fibra óptica) y no guiados (inalámbricos). El **Cable de Cobre UTP** es el más usado en LAN, económico pero sensible a interferencias. La **Fibra Óptica** usa luz, ofrece mayor velocidad y distancia, pero es más cara. Las redes **Inalámbricas** (Wi-Fi) usan ondas de radio.",
-                        interactive: "Para conectar dos edificios a 5 km de distancia, ¿qué medio sería ideal y por qué?",
-                        image_query: "Diagrama de Cable de Cobre y Fibra Óptica"
-                    },
+                        icon: "📡",
+                        subtitle: "¿Cómo viajan los datos de un lugar a otro?",
+                        badges: ["Hardware", "Físico"],
+                        content: `
+                            <p>Los <strong>medios de transmisión</strong> son los "caminos" por donde viajan los datos. Pueden ser cables (guiados) o señales por el aire (no guiados).</p>
+
+                            <p><strong>A. MEDIOS GUIADOS (CON CABLES):</strong></p>
+
+                            <p><strong>1. Cable de Par Trenzado (UTP/STP):</strong></p>
+                            <p>Es el cable más común en redes LAN. Tiene 8 cables internos organizados en 4 pares trenzados.</p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>UTP (Unshielded):</strong> Sin blindaje, más económico</li>
+                                <li><strong>STP (Shielded):</strong> Con blindaje metálico, reduce interferencias</li>
+                                <li><strong>Categorías:</strong> Cat5e (1 Gbps), Cat6 (10 Gbps), Cat6a (10 Gbps a 100m)</li>
+                                <li><strong>Distancia máxima:</strong> 100 metros</li>
+                                <li><strong>Conector:</strong> RJ-45 (parecido al de teléfono pero más grande)</li>
+                                <li>💡 <strong>Ventaja:</strong> Económico, fácil de instalar</li>
+                                <li>⚠️ <strong>Desventaja:</strong> Vulnerable a interferencias electromagnéticas</li>
+                            </ul>
+
+                            <p><strong>2. Cable Coaxial:</strong></p>
+                            <p>Tiene un conductor central rodeado de blindaje. Se usa en TV por cable e Internet por cable.</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong>Distancia:</strong> Hasta 500 metros</li>
+                                <li><strong>Blindaje:</strong> Mejor que UTP</li>
+                                <li>📺 Todavía se usa en servicios de Cable (Cablevisión, etc.)</li>
+                            </ul>
+
+                            <p><strong>3. Fibra Óptica (💎 LA MEJOR):</strong></p>
+                            <p>Transmite datos usando <strong>luz</strong> a través de hilos de vidrio o plástico muy delgados.</p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Velocidad:</strong> Hasta 100 Gbps o más</li>
+                                <li><strong>Distancia:</strong> Decenas de kilómetros sin repetidores</li>
+                                <li><strong>Inmune a interferencias electromagnéticas</strong></li>
+                                <li><strong>Tipos:</strong> Monomodo (larga distancia) y Multimodo (corta distancia)</li>
+                                <li>💰 <strong>Desventaja:</strong> Más cara y difícil de instalar</li>
+                                <li>🚀 <strong>Uso:</strong> Backbones de Internet, conexiones entre ciudades</li>
+                            </ul>
+
+                            <p><strong>B. MEDIOS NO GUIADOS (INALÁMBRICOS):</strong></p>
+
+                            <p><strong>1. Wi-Fi (Ondas de Radio):</strong></p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong>Frecuencias:</strong> 2.4 GHz (más alcance) y 5 GHz (más velocidad)</li>
+                                <li><strong>Estándares:</strong> 802.11n (WiFi 4), 802.11ac (WiFi 5), 802.11ax (WiFi 6)</li>
+                                <li><strong>Alcance:</strong> 30-50 metros en interiores</li>
+                            </ul>
+
+                            <p><strong>2. Bluetooth:</strong></p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Para conexiones de corto alcance (10 metros)</li>
+                                <li>Consumo bajo de energía</li>
+                                <li>Uso: Auriculares, teclados, mouse, IoT</li>
+                            </ul>
+
+                            <p><strong>3. Microondas y Satélite:</strong></p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Para largas distancias (enlaces punto a punto)</li>
+                                <li>Satélites: Internet en zonas remotas (ej: Starlink)</li>
+                            </ul>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - Tu Conexión a Internet:</strong></p>
+                            <p>Cuando navegás por Internet desde tu celular en casa:</p>
+                            <ol class="list-decimal pl-6 space-y-1">
+                                <li>Tu celular se conecta al <strong>router por WiFi</strong> (inalámbrico)</li>
+                                <li>El router se conecta al módem por <strong>cable UTP</strong></li>
+                                <li>El módem se conecta al proveedor (ej: Telecom) por <strong>cable coaxial o fibra óptica</strong></li>
+                                <li>Los datos viajan por la red del proveedor usando <strong>fibra óptica</strong> hasta el servidor de Netflix, por ejemplo</li>
+                            </ol>
+                            <p>¡En un solo video de YouTube usás varios medios de transmisión!</p>
+                        `,
+                        code: `// Analogía - Comparación de medios
+const medios = {
+    UTP: { velocidad: "1 Gbps", distancia: "100m", costo: "💰" },
+    Fibra: { velocidad: "100 Gbps", distancia: "10+ km", costo: "💰💰💰" },
+    WiFi: { velocidad: "1 Gbps", distancia: "50m", costo: "💰💰" }
+};
+
+// ¿Qué medio elegirías para conectar dos edificios a 2 km?
+// Respuesta: Fibra óptica (distancia larga, alta velocidad)`,
+                        image_query: "Estructura interna de cable UTP, Coaxial y Fibra Óptica con sus componentes",
+                        interactive: "Investigá qué tipo de cable usa tu conexión a Internet en casa. ¿Es Fibra Óptica o Cable Coaxial? Mirá la etiqueta del módem o preguntale a tu proveedor.",
+                        funFact: "Los cables de fibra óptica que cruzan océanos (¡sí, bajo el mar!) transmiten el 99% del tráfico de Internet intercontinental. Hay más de 400 cables submarinos conectando los continentes."
+                    }
                 }
             },
             "modelos": {
-                title: "Modelos de Redes",
+                title: "🏛️ Modelos de Referencia",
                 subtopics: {
                     "osi": {
                         title: "Modelo OSI",
-                        content: "Es un marco teórico de 7 capas que describe cómo la información viaja por una red. Va de la Capa 1 (Física, cables/bits) a la Capa 7 (Aplicación, software de usuario). Es esencial para entender la interoperabilidad. ",
-                        interactive: "¿En qué capa OSI se encuentra el switch y el router, respectivamente?",
-                        image_query: "Modelo OSI 7 Capas"
+                        icon: "📚",
+                        subtitle: "El mapa de 7 capas para entender redes",
+                        badges: ["Capa 2", "Teórico", "Fundamental"],
+                        content: `
+                            <p>El <strong>Modelo OSI</strong> (Open Systems Interconnection) es un marco conceptual de <strong>7 capas</strong> que describe cómo los datos viajan de una aplicación en una computadora a otra aplicación en otra computadora, incluso si están en redes diferentes.</p>
+
+                            <p><strong>¿Por qué 7 capas?</strong></p>
+                            <p>Cada capa tiene una tarea específica y se comunica solo con las capas adyacentes. Esto permite <strong>modularidad</strong>: podés cambiar tecnología en una capa sin afectar las otras.</p>
+
+                            <p><strong>LAS 7 CAPAS (de abajo hacia arriba):</strong></p>
+
+                            <div class="space-y-4">
+                                <div class="bg-red-50 p-3 rounded-lg border-l-4 border-red-500">
+                                    <p><strong>Capa 1 - FÍSICA:</strong></p>
+                                    <ul class="list-disc pl-6 text-sm">
+                                        <li><strong>Qué hace:</strong> Transmite bits (0 y 1) por el medio físico</li>
+                                        <li><strong>Elementos:</strong> Cables, conectores, voltajes, frecuencias</li>
+                                        <li><strong>Dispositivos:</strong> Hubs, repetidores</li>
+                                        <li><strong>Analogía:</strong> El camino de tierra donde pasan los autos</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-orange-50 p-3 rounded-lg border-l-4 border-orange-500">
+                                    <p><strong>Capa 2 - ENLACE DE DATOS:</strong></p>
+                                    <ul class="list-disc pl-6 text-sm">
+                                        <li><strong>Qué hace:</strong> Organiza los bits en tramas y controla el acceso al medio</li>
+                                        <li><strong>Direcciones:</strong> Direcciones MAC (físicas)</li>
+                                        <li><strong>Dispositivos:</strong> Switches, puentes</li>
+                                        <li><strong>Protocolos:</strong> Ethernet, Wi-Fi (802.11)</li>
+                                        <li><strong>Analogía:</strong> El cartel con la dirección de una casa</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-500">
+                                    <p><strong>Capa 3 - RED:</strong></p>
+                                    <ul class="list-disc pl-6 text-sm">
+                                        <li><strong>Qué hace:</strong> Enruta paquetes entre redes diferentes</li>
+                                        <li><strong>Direcciones:</strong> Direcciones IP (lógicas)</li>
+                                        <li><strong>Dispositivos:</strong> Routers (⭐ clave de Internet)</li>
+                                        <li><strong>Protocolos:</strong> IP, ICMP (ping)</li>
+                                        <li><strong>Analogía:</strong> El GPS que te dice qué ruta tomar</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-green-50 p-3 rounded-lg border-l-4 border-green-500">
+                                    <p><strong>Capa 4 - TRANSPORTE:</strong></p>
+                                    <ul class="list-disc pl-6 text-sm">
+                                        <li><strong>Qué hace:</strong> Asegura que los datos lleguen completos y en orden</li>
+                                        <li><strong>Protocolos:</strong> TCP (confiable), UDP (rápido)</li>
+                                        <li><strong>Conceptos:</strong> Puertos (ej: HTTP usa puerto 80)</li>
+                                        <li><strong>Analogía:</strong> El servicio de correo certificado vs. correo común</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-blue-50 p-3 rounded-lg border-l-4 border-blue-500">
+                                    <p><strong>Capa 5 - SESIÓN:</strong></p>
+                                    <ul class="list-disc pl-6 text-sm">
+                                        <li><strong>Qué hace:</strong> Establece, mantiene y termina sesiones entre aplicaciones</li>
+                                        <li><strong>Ejemplo:</strong> Login a tu cuenta de Instagram (inicia sesión)</li>
+                                        <li><strong>Analogía:</strong> La llamada telefónica que empieza, dura un rato y termina</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-indigo-50 p-3 rounded-lg border-l-4 border-indigo-500">
+                                    <p><strong>Capa 6 - PRESENTACIÓN:</strong></p>
+                                    <ul class="list-disc pl-6 text-sm">
+                                        <li><strong>Qué hace:</strong> Traduce, comprime y encripta datos</li>
+                                        <li><strong>Formatos:</strong> JPEG, PNG, MP4, cifrado SSL/TLS</li>
+                                        <li><strong>Analogía:</strong> Un traductor que convierte el idioma</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-purple-50 p-3 rounded-lg border-l-4 border-purple-500">
+                                    <p><strong>Capa 7 - APLICACIÓN:</strong></p>
+                                    <ul class="list-disc pl-6 text-sm">
+                                        <li><strong>Qué hace:</strong> Interfaz entre el usuario y la red</li>
+                                        <li><strong>Protocolos:</strong> HTTP/HTTPS (web), SMTP (email), FTP (archivos)</li>
+                                        <li><strong>Ejemplos:</strong> Navegador web, WhatsApp, Outlook</li>
+                                        <li><strong>Analogía:</strong> La app que usás en tu celular</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p><strong>Nemotecnia para recordar:</strong></p>
+                            <p class="font-bold text-purple-700">"Por Favor, Dame Tu Super Postre Ahora"</p>
+                            <p class="text-sm">(Física, Enlace, Red, Transporte, Sesión, Presentación, Aplicación)</p>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - Enviando un Mensaje por WhatsApp:</strong></p>
+                            <ol class="list-decimal pl-6 space-y-1">
+                                <li><strong>Capa 7:</strong> Escribís "Hola" en WhatsApp → App se encarga</li>
+                                <li><strong>Capa 6:</strong> El mensaje se encripta (nadie más puede leerlo)</li>
+                                <li><strong>Capa 5:</strong> Se inicia una sesión con el servidor de WhatsApp</li>
+                                <li><strong>Capa 4:</strong> Se usa TCP para asegurar que llegue completo</li>
+                                <li><strong>Capa 3:</strong> Los routers encuentran el camino al servidor (usando IP)</li>
+                                <li><strong>Capa 2:</strong> Tu switch local enruta la trama a tu router (usando MAC)</li>
+                                <li><strong>Capa 1:</strong> Los bits viajan por WiFi (ondas de radio) hasta tu router</li>
+                            </ol>
+                            <p class="mt-2">El proceso se invierte en el celular de tu amigo. ¡Todo pasa en milisegundos!</p>
+                        `,
+                        code: `# Analogía - Encapsulación de datos por capas
+mensaje_usuario = "Hola, ¿cómo estás?"
+
+# Capa 7 (Aplicación): Mensaje
+app_data = f"WhatsApp: {mensaje_usuario}"
+
+# Capa 6 (Presentación): Cifrado
+presentacion_data = f"Encrypted({app_data})"
+
+# Capa 4 (Transporte): Agregar puerto
+transporte_data = f"TCP:443 | {presentacion_data}"
+
+# Capa 3 (Red): Agregar IP
+red_data = f"IP: 192.168.1.5 → 8.8.8.8 | {transporte_data}"
+
+# Capa 2 (Enlace): Agregar MAC
+enlace_data = f"MAC: AB:CD:EF | {red_data}"
+
+# Capa 1 (Física): Convertir a bits
+bits = "01001000 01101111 01101100 01100001..."
+
+print(f"Enviando: {bits}")`,
+                        image_query: "Modelo OSI con las 7 capas, dispositivos y protocolos de cada capa",
+                        interactive: "Cuando hacés una videollamada por Zoom, ¿qué capas del modelo OSI están trabajando? Intentá identificar al menos 4 capas y qué hace cada una.",
+                        funFact: "El modelo OSI fue creado en 1984 por la ISO (Organización Internacional de Normalización). Aunque es un modelo teórico, se sigue enseñando en todo el mundo porque ayuda a entender conceptos que después se aplican en el modelo TCP/IP (el que se usa en la realidad)."
                     },
                     "tcpip": {
                         title: "Modelo TCP/IP",
-                        content: "Es el modelo práctico de 4 o 5 capas usado en Internet. Incluye protocolos fundamentales como **IP** (direccionamiento), **TCP** (conexión confiable) y **UDP** (conexión sin estado rápido).",
-                        interactive: "Si estás viendo un video por streaming, ¿es mejor usar TCP o UDP? ¿Por qué?",
-                        image_query: "Modelo TCP/IP 4 Capas"
-                    },
+                        icon: "🌐",
+                        subtitle: "El modelo que realmente usa Internet",
+                        badges: ["Protocolo", "Práctico", "Internet"],
+                        content: `
+                            <p>El <strong>Modelo TCP/IP</strong> es el modelo que <strong>realmente se usa en Internet</strong>. Fue desarrollado por el Departamento de Defensa de EE.UU. en los años 70 y es más práctico que el modelo OSI.</p>
+
+                            <p><strong>Diferencias con OSI:</strong></p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>TCP/IP tiene <strong>4 capas</strong> (a veces se habla de 5)</li>
+                                <li>OSI es teórico; TCP/IP es lo que usamos en la práctica</li>
+                                <li>TCP/IP combina algunas capas de OSI</li>
+                            </ul>
+
+                            <p><strong>LAS 4 CAPAS DE TCP/IP:</strong></p>
+
+                            <div class="space-y-4 mt-4">
+                                <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
+                                    <p><strong>Capa 1 - ACCESO A LA RED (Network Access)</strong></p>
+                                    <p class="text-sm text-gray-600 italic">Equivale a Capa 1 y 2 de OSI</p>
+                                    <ul class="list-disc pl-6 text-sm mt-2">
+                                        <li>Se encarga de transmitir datos por el medio físico (cable, WiFi)</li>
+                                        <li><strong>Tecnologías:</strong> Ethernet, Wi-Fi, PPP</li>
+                                        <li><strong>Direcciones:</strong> MAC</li>
+                                        <li>Incluye cables, tarjetas de red, switches</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
+                                    <p><strong>Capa 2 - INTERNET (o Red)</strong></p>
+                                    <p class="text-sm text-gray-600 italic">Equivale a Capa 3 de OSI</p>
+                                    <ul class="list-disc pl-6 text-sm mt-2">
+                                        <li><strong>Protocolo clave: IP</strong> (Internet Protocol)</li>
+                                        <li>Se encarga del direccionamiento lógico (direcciones IP)</li>
+                                        <li>Enruta paquetes entre redes diferentes</li>
+                                        <li><strong>Otros protocolos:</strong> ICMP (ping), ARP (relaciona IP con MAC)</li>
+                                        <li><strong>Dispositivo:</strong> Router</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-600">
+                                    <p><strong>Capa 3 - TRANSPORTE</strong></p>
+                                    <p class="text-sm text-gray-600 italic">Equivale a Capa 4 de OSI</p>
+                                    <ul class="list-disc pl-6 text-sm mt-2">
+                                        <li><strong>Dos protocolos principales:</strong></li>
+                                        <li><strong>TCP (Transmission Control Protocol):</strong>
+                                            <ul class="list-disc pl-6 mt-1">
+                                                <li>Confiable: garantiza que los datos lleguen en orden</li>
+                                                <li>Establece conexión (handshake de 3 vías)</li>
+                                                <li>Uso: Web (HTTP), Email (SMTP), descargas</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>UDP (User Datagram Protocol):</strong>
+                                            <ul class="list-disc pl-6 mt-1">
+                                                <li>Rápido pero no confiable</li>
+                                                <li>No establece conexión</li>
+                                                <li>Uso: Streaming, videollamadas, juegos online</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>Puertos:</strong> Identifican aplicaciones (ej: 80=HTTP, 443=HTTPS)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-600">
+                                    <p><strong>Capa 4 - APLICACIÓN</strong></p>
+                                    <p class="text-sm text-gray-600 italic">Equivale a Capas 5, 6 y 7 de OSI</p>
+                                    <ul class="list-disc pl-6 text-sm mt-2">
+                                        <li>Es la interfaz entre el usuario/aplicación y la red</li>
+                                        <li><strong>Protocolos importantes:</strong></li>
+                                        <li><strong>HTTP/HTTPS:</strong> Navegación web</li>
+                                        <li><strong>FTP:</strong> Transferencia de archivos</li>
+                                        <li><strong>SMTP/POP3/IMAP:</strong> Email</li>
+                                        <li><strong>DNS:</strong> Convierte nombres (google.com) en IPs</li>
+                                        <li><strong>DHCP:</strong> Asigna IPs automáticamente</li>
+                                        <li><strong>SSH:</strong> Acceso remoto seguro</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p class="mt-4"><strong>TCP vs UDP - ¿Cuándo usar cada uno?</strong></p>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-green-100 p-3 rounded">
+                                    <p class="font-bold text-green-800">🟢 Usá TCP cuando:</p>
+                                    <ul class="text-sm list-disc pl-6">
+                                        <li>Los datos deben llegar completos</li>
+                                        <li>El orden importa</li>
+                                        <li>Ej: Descargar un archivo, abrir una web</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-blue-100 p-3 rounded">
+                                    <p class="font-bold text-blue-800">🔵 Usá UDP cuando:</p>
+                                    <ul class="text-sm list-disc pl-6">
+                                        <li>La velocidad es crítica</li>
+                                        <li>Podés tolerar perder algunos datos</li>
+                                        <li>Ej: Streaming de video, videollamadas, juegos</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - Netflix:</strong></p>
+                            <ol class="list-decimal pl-6 space-y-2">
+                                <li><strong>Capa Aplicación:</strong> Abrís la app de Netflix y elegís "Stranger Things"</li>
+                                <li><strong>Capa Transporte:</strong> Netflix usa <strong>TCP</strong> para descargar la info de la serie y <strong>UDP</strong> para el streaming del video (para que no se corte)</li>
+                                <li><strong>Capa Internet:</strong> Tu router encuentra la <strong>IP</strong> del servidor de Netflix más cercano (ej: 52.85.118.36)</li>
+                                <li><strong>Capa Acceso a la Red:</strong> Los datos viajan por tu WiFi hasta el router, luego por fibra óptica hasta el servidor</li>
+                            </ol>
+                            <p class="mt-2 text-sm italic">Por eso a veces Netflix se pixela pero no se pausa: UDP prioriza velocidad sobre perfección.</p>
+                        `,
+                        code: `// Analogía - Diferencia entre TCP y UDP
+
+// TCP: Como enviar una carta certificada
+function enviarTCP(mensaje) {
+    console.log("1. Estableciendo conexión...");
+    console.log("2. Enviando:", mensaje);
+    console.log("3. Esperando confirmación...");
+    console.log("4. Confirmación recibida ✓");
+    console.log("5. Cerrando conexión");
+}
+
+// UDP: Como gritar en la calle
+function enviarUDP(mensaje) {
+    console.log("Enviando:", mensaje);
+    console.log("(No esperamos confirmación)");
+}
+
+// Para una transferencia bancaria: TCP
+enviarTCP("Transferir $10.000");
+
+// Para un juego online: UDP
+enviarUDP("Jugador movió a X:150, Y:300");`,
+                        image_query: "Comparación visual Modelo OSI vs TCP/IP con sus capas equivalentes",
+                        interactive: "Cuando jugás al Free Fire o Fortnite online, ¿por qué se usa UDP en vez de TCP? Pensá qué es más importante: que no falte ningún dato o que llegue rápido.",
+                        funFact: "TCP/IP se creó en 1974, pero recién en 1983 se adoptó masivamente cuando ARPANET (predecesor de Internet) cambió a este protocolo. El 1 de enero de 1983 se conoce como 'Flag Day' (Día de la Bandera) de Internet."
+                    }
                 }
             },
             "direccionamiento": {
-                title: "Direccionamiento",
+                title: "🎯 Direccionamiento IP",
                 subtopics: {
                     "ipv4": {
-                        title: "Direccionamiento IPv4 y Subnetting",
-                        content: "IPv4 usa direcciones de 32 bits (ej. 192.168.1.1). Una dirección se divide en una parte de Red y una de Host, definidas por la **Máscara de Subred**. El **Subnetting** es el arte de dividir una red grande en subredes más pequeñas para una gestión eficiente y seguridad.",
-                        interactive: "Dada la dirección 192.168.10.0 con máscara 255.255.255.0, ¿cuál es el rango de hosts disponibles?",
-                        image_query: "Estructura de una dirección IPv4 y Máscara de Subred"
+                        title: "IPv4 y Subnetting",
+                        icon: "🔢",
+                        subtitle: "El sistema de direcciones que mueve Internet",
+                        badges: ["Capa 3", "Fundamental", "Matemática"],
+                        content: `
+                            <p><strong>IPv4</strong> (Internet Protocol version 4) es el sistema de direccionamiento más usado en Internet. Una dirección IPv4 identifica de manera única a un dispositivo en una red.</p>
+
+                            <p><strong>ESTRUCTURA DE UNA DIRECCIÓN IPv4:</strong></p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li>Tiene <strong>32 bits</strong> (4 bytes)</li>
+                                <li>Se escribe en formato decimal separado por puntos: <strong>192.168.1.10</strong></li>
+                                <li>Cada "octeto" (grupo de 8 bits) puede ir de <strong>0 a 255</strong></li>
+                                <li>Ejemplo: 192.168.1.10 = 11000000.10101000.00000001.00001010 (en binario)</li>
+                            </ul>
+
+                            <p><strong>CLASES DE DIRECCIONES IPv4:</strong></p>
+                            <div class="space-y-2">
+                                <div class="bg-red-50 p-2 rounded border-l-4 border-red-500">
+                                    <strong>Clase A:</strong> 1.0.0.0 a 126.0.0.0 (Grandes redes, millones de hosts)<br>
+                                    <span class="text-sm">Máscara por defecto: 255.0.0.0 (/8)</span>
+                                </div>
+                                <div class="bg-yellow-50 p-2 rounded border-l-4 border-yellow-500">
+                                    <strong>Clase B:</strong> 128.0.0.0 a 191.255.0.0 (Redes medianas)<br>
+                                    <span class="text-sm">Máscara por defecto: 255.255.0.0 (/16)</span>
+                                </div>
+                                <div class="bg-green-50 p-2 rounded border-l-4 border-green-500">
+                                    <strong>Clase C:</strong> 192.0.0.0 a 223.255.255.0 (Redes pequeñas)<br>
+                                    <span class="text-sm">Máscara por defecto: 255.255.255.0 (/24) ← Más común en casas</span>
+                                </div>
+                            </div>
+
+                            <p><strong>DIRECCIONES IP PRIVADAS (RFC 1918):</strong></p>
+                            <p>Son rangos reservados para uso interno (LAN) que NO se enrutan en Internet:</p>
+                            <ul class="list-disc pl-6">
+                                <li><strong>10.0.0.0 a 10.255.255.255</strong> (Clase A)</li>
+                                <li><strong>172.16.0.0 a 172.31.255.255</strong> (Clase B)</li>
+                                <li><strong>192.168.0.0 a 192.168.255.255</strong> (Clase C) ← Tu casa usa estas</li>
+                            </ul>
+
+                            <p><strong>MÁSCARA DE SUBRED:</strong></p>
+                            <p>La máscara define qué parte de la IP identifica la RED y qué parte identifica al HOST (dispositivo).</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong>Ejemplo:</strong> IP: 192.168.1.10 con Máscara: 255.255.255.0</li>
+                                <li><strong>Red:</strong> 192.168.1.0 (los primeros 3 octetos)</li>
+                                <li><strong>Host:</strong> 10 (el último octeto)</li>
+                                <li><strong>Rango válido:</strong> 192.168.1.1 a 192.168.1.254 (254 hosts posibles)</li>
+                                <li><strong>IP de Red:</strong> 192.168.1.0 (no se puede asignar a un dispositivo)</li>
+                                <li><strong>IP de Broadcast:</strong> 192.168.1.255 (para enviar a todos)</li>
+                            </ul>
+
+                            <p><strong>NOTACIÓN CIDR (Classless Inter-Domain Routing):</strong></p>
+                            <p>Es una forma corta de escribir la máscara:</p>
+                            <ul class="list-disc pl-6">
+                                <li><strong>192.168.1.0/24</strong> = Máscara 255.255.255.0 (24 bits para red)</li>
+                                <li><strong>192.168.1.0/16</strong> = Máscara 255.255.0.0</li>
+                                <li><strong>192.168.1.0/8</strong> = Máscara 255.0.0.0</li>
+                            </ul>
+
+                            <p><strong>SUBNETTING (División de Redes):</strong></p>
+                            <p>Es el arte de dividir una red grande en redes más pequeñas (subredes). Se hace moviendo la línea entre parte de red y parte de host.</p>
+                            <p><strong>Ejemplo:</strong> Tenés la red 192.168.1.0/24 (254 hosts) y querés dividirla en 4 subredes:</p>
+                            <ol class="list-decimal pl-6 space-y-1">
+                                <li>Necesitás 2 bits para 4 subredes (2² = 4)</li>
+                                <li>Nueva máscara: /26 (255.255.255.192)</li>
+                                <li><strong>Subred 1:</strong> 192.168.1.0/26 (hosts: 1-62)</li>
+                                <li><strong>Subred 2:</strong> 192.168.1.64/26 (hosts: 65-126)</li>
+                                <li><strong>Subred 3:</strong> 192.168.1.128/26 (hosts: 129-190)</li>
+                                <li><strong>Subred 4:</strong> 192.168.1.192/26 (hosts: 193-254)</li>
+                            </ol>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - Red de tu Casa:</strong></p>
+                            <p>Tu router tiene configurada la red: <strong>192.168.1.0/24</strong></p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong>Router (Gateway):</strong> 192.168.1.1</li>
+                                <li><strong>Tu compu:</strong> 192.168.1.105</li>
+                                <li><strong>Tu celular:</strong> 192.168.1.110</li>
+                                <li><strong>Smart TV:</strong> 192.168.1.115</li>
+                            </ul>
+                            <p class="mt-2">Todos están en la misma red (192.168.1.0) y pueden comunicarse directamente. El router usa <strong>NAT</strong> para que puedan acceder a Internet con una sola IP pública.</p>
+                        `,
+                        code: `# Python - Calculadora de Subredes Simple
+
+def calcular_red(ip, mascara):
+    # Convertir IP y máscara a listas de enteros
+    ip_partes = list(map(int, ip.split('.')))
+    mask_partes = list(map(int, mascara.split('.')))
+    
+    # Calcular dirección de red (AND lógico)
+    red = [ip_partes[i] & mask_partes[i] for i in range(4)]
+    
+    # Calcular broadcast (OR con invertida de máscara)
+    broadcast = [ip_partes[i] | (255 - mask_partes[i]) for i in range(4)]
+    
+    print(f"IP: {ip}")
+    print(f"Máscara: {mascara}")
+    print(f"Red: {'.'.join(map(str, red))}")
+    print(f"Broadcast: {'.'.join(map(str, broadcast))}")
+    
+    # Calcular hosts disponibles
+    hosts = (256 - mask_partes[3]) - 2
+    print(f"Hosts disponibles: {hosts}")
+
+# Ejemplo
+calcular_red("192.168.1.50", "255.255.255.0")`,
+                        image_query: "Estructura de dirección IPv4 con división de red y host, con ejemplos de subnetting",
+                        interactive: "Tu compu tiene IP 192.168.10.45 con máscara 255.255.255.0. ¿Cuál es la dirección de red? ¿Cuál es el rango de IPs válidas para hosts? ¿Cuál es la IP de broadcast?",
+                        funFact: "IPv4 permite ~4.3 mil millones de direcciones (2³²). Pero ya se agotaron en 2011. Por eso existe IPv6 con 340 sextillones de direcciones (un número con 39 ceros). Argentina recibió su última asignación de IPv4 en 2014."
                     },
                     "ipv6": {
-                        title: "Direccionamiento IPv6",
-                        content: "Es la evolución de IPv4, usando 128 bits. Esto proporciona una cantidad virtualmente ilimitada de direcciones, resolviendo el problema del agotamiento de IPv4. Su formato es hexadecimal (ej. 2001:db8::1).",
-                        interactive: "Mencioná una ventaja de IPv6 sobre IPv4, aparte de la cantidad de direcciones.",
-                        image_query: "Estructura de una dirección IPv6"
+                        title: "IPv6 - El Futuro",
+                        icon: "🚀",
+                        subtitle: "Direcciones infinitas para un mundo conectado",
+                        badges: ["Capa 3", "Moderno", "Avanzado"],
+                        content: `
+                            <p><strong>IPv6</strong> (Internet Protocol version 6) es la evolución de IPv4, diseñado para resolver el problema del agotamiento de direcciones y mejorar la eficiencia de Internet.</p>
+
+                            <p><strong>¿POR QUÉ IPv6?</strong></p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>IPv4 solo permite ~4.3 mil millones de direcciones</li>
+                                <li>Con celulares, IoT, autos conectados... ¡no alcanza!</li>
+                                <li>IPv6 tiene <strong>340 sextillones</strong> de direcciones (2¹²⁸)</li>
+                                <li>Para que te des una idea: podés asignar millones de IPs a cada persona del planeta</li>
+                            </ul>
+
+                            <p><strong>ESTRUCTURA DE UNA DIRECCIÓN IPv6:</strong></p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li>Tiene <strong>128 bits</strong> (4 veces más que IPv4)</li>
+                                <li>Se escribe en <strong>hexadecimal</strong> separado por dos puntos</li>
+                                <li><strong>Ejemplo completo:</strong> 2001:0db8:85a3:0000:0000:8a2e:0370:7334</li>
+                                <li>Se divide en <strong>8 grupos de 4 dígitos hexadecimales</strong></li>
+                            </ul>
+
+                            <p><strong>REGLAS DE ABREVIACIÓN:</strong></p>
+                            <p>Para hacer más cortas las direcciones IPv6:</p>
+                            <ol class="list-decimal pl-6 space-y-2">
+                                <li><strong>Omitir ceros a la izquierda:</strong><br>
+                                    2001:0db8:0000:0042 → 2001:db8:0:42
+                                </li>
+                                <li><strong>Comprimir ceros consecutivos con "::":</strong><br>
+                                    2001:0db8:0000:0000:0000:0000:0000:0001 → 2001:db8::1<br>
+                                    <span class="text-sm text-red-600">⚠️ Solo se puede usar "::" una vez por dirección</span>
+                                </li>
+                            </ol>
+
+                            <p><strong>TIPOS DE DIRECCIONES IPv6:</strong></p>
+                            <div class="space-y-2">
+                                <div class="bg-blue-50 p-2 rounded border-l-4 border-blue-500">
+                                    <strong>Unicast:</strong> Identifica una sola interfaz (equivalente a IP normal)<br>
+                                    <span class="text-sm">Ej: 2001:db8::1</span>
+                                </div>
+                                <div class="bg-green-50 p-2 rounded border-l-4 border-green-500">
+                                    <strong>Multicast:</strong> Para enviar a un grupo de dispositivos<br>
+                                    <span class="text-sm">Prefijo: ff00::/8</span>
+                                </div>
+                                <div class="bg-yellow-50 p-2 rounded border-l-4 border-yellow-500">
+                                    <strong>Anycast:</strong> Para enviar al más cercano de un grupo<br>
+                                    <span class="text-sm">Se asigna la misma IP a varios servidores</span>
+                                </div>
+                                <div class="bg-red-50 p-2 rounded border-l-4 border-red-500">
+                                    <strong>Link-Local:</strong> Solo para comunicación local (no enrutable)<br>
+                                    <span class="text-sm">Prefijo: fe80::/10 (se autoconfigura)</span>
+                                </div>
+                            </div>
+
+                            <p><strong>DIRECCIONES ESPECIALES:</strong></p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong>::1</strong> → Loopback (equivale a 127.0.0.1 en IPv4)</li>
+                                <li><strong>::</strong> → Dirección no especificada</li>
+                                <li><strong>fe80::/10</strong> → Link-local (red local)</li>
+                                <li><strong>2001:db8::/32</strong> → Documentación y ejemplos</li>
+                                <li><strong>ff00::/8</strong> → Multicast</li>
+                            </ul>
+
+                            <p><strong>VENTAJAS DE IPv6 sobre IPv4:</strong></p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>✅ <strong>Espacio de direcciones:</strong> Prácticamente infinito</li>
+                                <li>✅ <strong>No necesita NAT:</strong> Cada dispositivo puede tener IP pública</li>
+                                <li>✅ <strong>Autoconfiguración:</strong> Los dispositivos pueden configurarse solos (SLAAC)</li>
+                                <li>✅ <strong>Mejor seguridad:</strong> IPsec integrado por diseño</li>
+                                <li>✅ <strong>Más eficiente:</strong> Header simplificado, menos procesamiento en routers</li>
+                                <li>✅ <strong>QoS mejorado:</strong> Mejor soporte para tráfico en tiempo real</li>
+                            </ul>
+
+                            <p><strong>TRANSICIÓN IPv4 → IPv6:</strong></p>
+                            <p>Como no todos usan IPv6 todavía, existen mecanismos de transición:</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong>Dual Stack:</strong> Routers y dispositivos soportan ambos protocolos</li>
+                                <li><strong>Tunneling:</strong> Envolver paquetes IPv6 dentro de IPv4</li>
+                                <li><strong>NAT64:</strong> Traducir entre IPv6 e IPv4</li>
+                            </ul>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - Tu Celular con IPv6:</strong></p>
+                            <p>Muchos celulares ya usan IPv6 cuando se conectan por 4G/5G:</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li><strong>IPv6 Global:</strong> 2800:a10:800f:0:a123:4567:89ab:cdef</li>
+                                <li><strong>IPv6 Link-Local:</strong> fe80::a123:4567:89ab:cdef</li>
+                            </ul>
+                            <p class="mt-2">Cuando visitás Google, YouTube o Facebook, es probable que estés usando IPv6 sin darte cuenta. Podés verificarlo entrando a <strong>test-ipv6.com</strong></p>
+                        `,
+                        code: `# Python - Trabajar con direcciones IPv6
+
+import ipaddress
+
+# Crear dirección IPv6
+ip = ipaddress.IPv6Address('2001:db8::1')
+print(f"IP: {ip}")
+print(f"IP comprimida: {ip.compressed}")
+print(f"IP expandida: {ip.exploded}")
+
+# Verificar tipo
+print(f"¿Es link-local? {ip.is_link_local}")
+print(f"¿Es multicast? {ip.is_multicast}")
+
+# Red IPv6
+red = ipaddress.IPv6Network('2001:db8::/32')
+print(f"\\nRed: {red}")
+print(f"Hosts disponibles: {red.num_addresses}")
+
+# Salida:
+# IP: 2001:db8::1
+# IP comprimida: 2001:db8::1
+# IP expandida: 2001:0db8:0000:0000:0000:0000:0000:0001
+# ¿Es link-local? False
+# ¿Es multicast? False
+# Red: 2001:db8::/32
+# Hosts disponibles: 79228162514264337593543950336`,
+                        image_query: "Comparación visual de estructura IPv4 vs IPv6 con ejemplos de direcciones",
+                        interactive: "Si IPv6 tiene 2¹²⁸ direcciones, ¿cuántas direcciones IPv6 podría tener cada persona en la Tierra (asumiendo 8 mil millones de personas)? Hacé la cuenta con calculadora.",
+                        funFact: "El día mundial de IPv6 fue el 8 de junio de 2011, cuando grandes empresas como Google, Facebook y Yahoo activaron IPv6 por 24 horas. Fue tan exitoso que al año siguiente lo hicieron permanente. Hoy, más del 40% del tráfico de Google usa IPv6."
                     },
                     "mac": {
                         title: "Direcciones MAC",
-                        content: "La MAC (Media Access Control) es una dirección física de 48 bits grabada en la tarjeta de red (NIC). Opera en la Capa 2 (Enlace de Datos) del modelo OSI y es usada por los switches para reenviar tramas localmente. Es única a nivel mundial.",
-                        interactive: "¿Qué dispositivo de red utiliza la dirección MAC para funcionar?",
-                        image_query: "Estructura de una dirección MAC"
-                    },
+                        icon: "🏷️",
+                        subtitle: "La identificación física de tu tarjeta de red",
+                        badges: ["Capa 2", "Hardware", "Único"],
+                        content: `
+                            <p>La <strong>dirección MAC</strong> (Media Access Control) es un identificador único y permanente que tiene cada tarjeta de red (NIC - Network Interface Card). Es como el DNI de tu placa de red.</p>
+
+                            <p><strong>CARACTERÍSTICAS DE LA MAC:</strong></p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li>Tiene <strong>48 bits</strong> (6 bytes)</li>
+                                <li>Se escribe en <strong>hexadecimal</strong> separado por dos puntos o guiones</li>
+                                <li><strong>Ejemplo:</strong> 00:1A:2B:3C:4D:5E o 00-1A-2B-3C-4D-5E</li>
+                                <li>Es <strong>única a nivel mundial</strong> (asignada por el fabricante)</li>
+                                <li>Opera en la <strong>Capa 2</strong> (Enlace de Datos) del modelo OSI</li>
+                                <li>Es permanente y no cambia aunque cambies de red</li>
+                            </ul>
+
+                            <p><strong>ESTRUCTURA DE UNA DIRECCIÓN MAC:</strong></p>
+                            <div class="bg-blue-50 p-4 rounded-lg border-2 border-blue-300">
+                                <p class="font-mono text-lg">00 : 1A : 2B : 3C : 4D : 5E</p>
+                                <div class="mt-2 grid grid-cols-2 gap-2 text-sm">
+                                    <div class="bg-white p-2 rounded">
+                                        <strong>Primeros 3 bytes (OUI):</strong><br>
+                                        00:1A:2B<br>
+                                        <span class="text-gray-600">Identificador del Fabricante</span><br>
+                                        <span class="text-xs italic">Ej: Intel, TP-Link, Samsung</span>
+                                    </div>
+                                    <div class="bg-white p-2 rounded">
+                                        <strong>Últimos 3 bytes (NIC):</strong><br>
+                                        3C:4D:5E<br>
+                                        <span class="text-gray-600">Número único del dispositivo</span><br>
+                                        <span class="text-xs italic">Asignado por el fabricante</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p><strong>¿PARA QUÉ SE USA LA MAC?</strong></p>
+                            <ul class="list-disc pl-6 space-y-2">
+                                <li><strong>Comunicación Local (LAN):</strong> Los switches usan MACs para enviar tramas al dispositivo correcto</li>
+                                <li><strong>ARP (Address Resolution Protocol):</strong> Relaciona IPs con MACs en la red local</li>
+                                <li><strong>Seguridad:</strong> Filtrado MAC en routers WiFi (whitelist/blacklist)</li>
+                                <li><strong>Identificación:</strong> Algunos sistemas de licencias usan la MAC</li>
+                            </ul>
+
+                            <p><strong>MAC vs IP - ¿Cuál es la diferencia?</strong></p>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-orange-50 p-3 rounded border-2 border-orange-300">
+                                    <strong class="text-orange-800">📍 Dirección MAC</strong>
+                                    <ul class="text-sm list-disc pl-6 mt-2">
+                                        <li>Capa 2 (Enlace de Datos)</li>
+                                        <li>Física y permanente</li>
+                                        <li>No cambia</li>
+                                        <li>Solo para comunicación local</li>
+                                        <li>48 bits (hexadecimal)</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-green-50 p-3 rounded border-2 border-green-300">
+                                    <strong class="text-green-800">🌐 Dirección IP</strong>
+                                    <ul class="text-sm list-disc pl-6 mt-2">
+                                        <li>Capa 3 (Red)</li>
+                                        <li>Lógica y variable</li>
+                                        <li>Cambia según la red</li>
+                                        <li>Para comunicación global</li>
+                                        <li>32 bits IPv4 (decimal)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <p><strong>PROTOCOLO ARP (Address Resolution Protocol):</strong></p>
+                            <p>ARP es el "traductor" entre IP y MAC en la red local:</p>
+                            <ol class="list-decimal pl-6 space-y-1">
+                                <li>Tu compu quiere enviar datos a 192.168.1.5 pero solo conoce la IP</li>
+                                <li>Envía un mensaje ARP broadcast: "¿Quién tiene la IP 192.168.1.5?"</li>
+                                <li>El dispositivo con esa IP responde: "Yo, y mi MAC es 00:1A:2B:3C:4D:5E"</li>
+                                <li>Tu compu guarda esa info en su "tabla ARP" para usarla después</li>
+                            </ol>
+
+                            <p><strong>¿SE PUEDE CAMBIAR UNA MAC?</strong></p>
+                            <p>Aunque la MAC es "permanente", se puede modificar a nivel de software (spoofing). Esto se usa para:</p>
+                            <ul class="list-disc pl-6 space-y-1">
+                                <li>Privacidad (evitar tracking)</li>
+                                <li>Bypassear filtros MAC en redes WiFi</li>
+                                <li>Testing de seguridad</li>
+                                <li>⚠️ Pero es ilegal hacerlo para acceder a redes sin permiso</li>
+                            </ul>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - Conectarte al WiFi de la Escuela:</strong></p>
+                            <ol class="list-decimal pl-6 space-y-2">
+                                <li><strong>Tu notebook enciende WiFi</strong> → Su tarjeta de red tiene MAC: A1:B2:C3:D4:E5:F6</li>
+                                <li><strong>Se conecta al router</strong> → El router ve tu MAC y te asigna IP: 192.168.1.100 (vía DHCP)</li>
+                                <li><strong>Tabla ARP del router:</strong>
+                                    <pre class="text-xs mt-1">192.168.1.100 → A1:B2:C3:D4:E5:F6</pre>
+                                </li>
+                                <li><strong>Querés abrir Google</strong> → Tu compu usa ARP para saber la MAC del router (gateway)</li>
+                                <li><strong>El switch</strong> usa tu MAC para enviar la respuesta exactamente a tu notebook</li>
+                            </ol>
+                        `,
+                        code: `# Ver tu dirección MAC en diferentes sistemas:
+
+# Windows (CMD):
+ipconfig /all
+# Buscar "Dirección física"
+
+# Linux/Mac (Terminal):
+ifconfig
+# o
+ip link show
+
+# Python - Obtener tu MAC:
+import uuid
+
+def get_mac_address():
+    mac = uuid.getnode()
+    mac_str = ':'.join(['{:02x}'.format((mac >> i) & 0xff) 
+                        for i in range(0,48,8)][::-1])
+    return mac_str
+
+print(f"Tu MAC: {get_mac_address()}")`,
+                        image_query: "Estructura de dirección MAC con OUI y NIC, y diagrama de ARP funcionando",
+                        interactive: "Buscá la dirección MAC de tu celular o compu. Después buscá en Internet a qué fabricante corresponden los primeros 3 bytes (OUI). Pista: usá una web como 'macvendors.com'",
+                        funFact: "La primera parte de la MAC (OUI) la asigna la IEEE. Cada fabricante paga por su OUI. Por ejemplo, todas las placas Intel empiezan con valores como 00:1B:21 o 00:13:20. Podés 'adivinar' la marca de un dispositivo mirando su MAC."
+                    }
                 }
             },
             "hardware_software": {
-                title: "Hardware y Software de Red",
+                title: "⚙️ Dispositivos y Herramientas",
                 subtopics: {
                     "hardware": {
-                        title: "Dispositivos de Hardware",
-                        content: "El **Router** opera en Capa 3 (Red) y conecta diferentes redes (ej. tu red local a Internet). El **Switch** opera en Capa 2 (Enlace) y conecta dispositivos dentro de la misma red. El **Hub** es un dispositivo obsoleto de Capa 1 que simplemente repite señales.",
-                        interactive: "Si quiero conectar dos oficinas geográficamente separadas, ¿necesito un Switch o un Router?",
-                        image_query: "Diferencia entre Router, Switch y Hub"
+                        title: "Dispositivos de Red",
+                        icon: "🔌",
+                        subtitle: "El hardware que hace funcionar las redes",
+                        badges: ["Hardware", "Dispositivos"],
+                        content: `
+                            <p>Los <strong>dispositivos de red</strong> son el hardware que permite la comunicación entre computadoras. Cada uno opera en una capa diferente del modelo OSI y cumple funciones específicas.</p>
+
+                            <p><strong>1. HUB (Concentrador) - OBSOLETO</strong></p>
+                            <div class="bg-gray-100 p-3 rounded border-l-4 border-gray-400">
+                                <p><strong>Capa OSI:</strong> Capa 1 (Física)</p>
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Función:</strong> Repite señales eléctricas a todos los puertos</li>
+                                    <li><strong>Inteligencia:</strong> Ninguna (es "tonto")</li>
+                                    <li>❌ <strong>Problema:</strong> Genera colisiones, desperdicia ancho de banda</li>
+                                    <li>❌ <strong>Seguridad:</strong> Todos los dispositivos ven todo el tráfico</li>
+                                    <li>📉 Ya casi no se usa</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>2. SWITCH (Conmutador) - ⭐ CLAVE EN LAN</strong></p>
+                            <div class="bg-blue-50 p-3 rounded border-l-4 border-blue-500">
+                                <p><strong>Capa OSI:</strong> Capa 2 (Enlace de Datos)</p>
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Función:</strong> Envía tramas solo al puerto correcto usando direcciones MAC</li>
+                                    <li><strong>Inteligencia:</strong> Aprende MACs y construye tabla CAM (Content Addressable Memory)</li>
+                                    <li>✅ Eficiente: No hay colisiones, cada puerto es una ruta dedicada</li>
+                                    <li>✅ Seguro: Cada dispositivo solo ve su propio tráfico</li>
+                                    <li>🏆 <strong>Uso:</strong> Conectar dispositivos en una LAN (PCs, impresoras, access points)</li>
+                                </ul>
+                                <p class="text-xs italic mt-2">💡 Hay switches "manageable" que permiten configurar VLANs, QoS, etc.</p>
+                            </div>
+
+                            <p><strong>3. ROUTER (Enrutador) - 🌐 CLAVE EN INTERNET</strong></p>
+                            <div class="bg-green-50 p-3 rounded border-l-4 border-green-500">
+                                <p><strong>Capa OSI:</strong> Capa 3 (Red)</p>
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Función:</strong> Conecta redes diferentes y elige el mejor camino para los paquetes</li>
+                                    <li><strong>Usa:</strong> Direcciones IP y tablas de enrutamiento</li>
+                                    <li>✅ Conecta tu red local (LAN) con Internet (WAN)</li>
+                                    <li>✅ Función NAT: Traduce IPs privadas a IP pública</li>
+                                    <li>✅ Firewall integrado (en routers hogareños)</li>
+                                    <li>🏆 <strong>Ejemplo:</strong> El "modem" de tu casa (técnicamente es un router)</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>4. ACCESS POINT (Punto de Acceso WiFi)</strong></p>
+                            <div class="bg-purple-50 p-3 rounded border-l-4 border-purple-500">
+                                <p><strong>Capa OSI:</strong> Capa 2 (Enlace de Datos)</p>
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Función:</strong> Permite que dispositivos inalámbricos se conecten a la red cableada</li>
+                                    <li>Opera como un "puente" entre WiFi y Ethernet</li>
+                                    <li>✅ Crea la señal WiFi en oficinas, escuelas, shoppings</li>
+                                    <li>🔧 Se conecta por cable a un switch</li>
+                                    <li>💡 Los routers hogareños suelen incluir un AP integrado</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>5. FIREWALL (Cortafuegos)</strong></p>
+                            <div class="bg-red-50 p-3 rounded border-l-4 border-red-500">
+                                <p><strong>Capas OSI:</strong> Puede operar en Capas 3, 4 o 7</p>
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Función:</strong> Bloquea o permite tráfico según reglas de seguridad</li>
+                                    <li>✅ Protege de ataques, malware, accesos no autorizados</li>
+                                    <li>✅ Puede inspeccionar contenido de paquetes (DPI - Deep Packet Inspection)</li>
+                                    <li>🏢 Empresas usan firewalls dedicados (hardware o software)</li>
+                                    <li>🏠 Tu router tiene un firewall básico integrado</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>6. MÓDEM (Modulador-Demodulador)</strong></p>
+                            <div class="bg-yellow-50 p-3 rounded border-l-4 border-yellow-500">
+                                <p><strong>Capa OSI:</strong> Capa 1 (Física)</p>
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Función:</strong> Convierte señales digitales en analógicas (y viceversa) para transmitir por cables o líneas telefónicas</li>
+                                    <li>DSL Modem: Usa línea telefónica</li>
+                                    <li>Cable Modem: Usa cable coaxial (TV por cable)</li>
+                                    <li>Fibra Óptica: ONT (Optical Network Terminal)</li>
+                                    <li>🏠 En casa, el "router" suele tener módem + router + switch + AP todo junto</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>COMPARACIÓN RÁPIDA:</strong></p>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm border-collapse border border-gray-300">
+                                    <thead class="bg-gray-200">
+                                        <tr>
+                                            <th class="border border-gray-300 p-2">Dispositivo</th>
+                                            <th class="border border-gray-300 p-2">Capa</th>
+                                            <th class="border border-gray-300 p-2">Usa</th>
+                                            <th class="border border-gray-300 p-2">Función</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="border border-gray-300 p-2">Hub</td>
+                                            <td class="border border-gray-300 p-2">1</td>
+                                            <td class="border border-gray-300 p-2">-</td>
+                                            <td class="border border-gray-300 p-2">Repite todo</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border border-gray-300 p-2">Switch</td>
+                                            <td class="border border-gray-300 p-2">2</td>
+                                            <td class="border border-gray-300 p-2">MAC</td>
+                                            <td class="border border-gray-300 p-2">Enruta en LAN</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="border border-gray-300 p-2">Router</td>
+                                            <td class="border border-gray-300 p-2">3</td>
+                                            <td class="border border-gray-300 p-2">IP</td>
+                                            <td class="border border-gray-300 p-2">Conecta redes</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - Red de un Laboratorio Escolar:</strong></p>
+                            <ol class="list-decimal pl-6 space-y-2">
+                                <li><strong>10 PCs</strong> conectadas por cable UTP a un <strong>Switch de 24 puertos</strong> (Capa 2)</li>
+                                <li>El Switch se conecta por cable a un <strong>Router</strong> (Capa 3)</li>
+                                <li>El Router se conecta a un <strong>Módem de Fibra</strong> del proveedor de Internet</li>
+                                <li>Hay un <strong>Access Point</strong> conectado al Switch para dar WiFi a notebooks y celulares</li>
+                            </ol>
+                            <p class="mt-2"><strong>Flujo de datos:</strong> PC1 quiere acceder a YouTube → Switch ve la MAC de PC1 y envía la trama al Router → Router enruta el paquete a Internet → Respuesta vuelve por el mismo camino.</p>
+                        `,
+                        interactive: "Dibujá en tu carpeta la red de tu casa: ¿Cuántos dispositivos tenés? ¿Hay un router? ¿Hay un switch? ¿O todo está en un solo equipo?",
+                        funFact: "Los switches modernos son tan rápidos que pueden reenviar millones de tramas por segundo. Un switch empresarial puede tener velocidades de switching de varios Terabits por segundo (1 Tbps = 1000 Gbps)."
                     },
                     "software": {
-                        title: "Software y Herramientas",
-                        content: "Los **NOS (Network Operating Systems)** son software especializado para gestionar y controlar recursos de red (ej. Windows Server, Cisco IOS). Herramientas como **Wireshark** permiten analizar el tráfico de red (paquetes) y **Ping** se usa para probar la conectividad.",
-                        interactive: "Si tenés problemas para conectarte a un sitio web, ¿qué herramienta usarías primero para descartar un problema de conectividad básica?",
-                        image_query: "Captura de pantalla de Wireshark analizando tráfico de red"
-                    },
+                        title: "Herramientas de Red",
+                        icon: "🛠️",
+                        subtitle: "Software para diagnosticar, analizar y gestionar redes",
+                        badges: ["Software", "Diagnóstico"],
+                        content: `
+                            <p>Las <strong>herramientas de red</strong> son programas que nos permiten diagnosticar problemas, analizar tráfico, configurar dispositivos y gestionar redes. Son esenciales para cualquier técnico de redes.</p>
+
+                            <p><strong>A. HERRAMIENTAS DE LÍNEA DE COMANDOS:</strong></p>
+
+                            <p><strong>1. PING - Probar Conectividad</strong></p>
+                            <div class="bg-green-50 p-3 rounded border-l-4 border-green-500">
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Qué hace:</strong> Envía paquetes ICMP para verificar si un host está alcanzable</li>
+                                    <li><strong>Uso:</strong> <code class="bg-gray-800 text-green-400 px-2 py-1 rounded">ping 8.8.8.8</code> o <code class="bg-gray-800 text-green-400 px-2 py-1 rounded">ping google.com</code></li>
+                                    <li><strong>Info que da:</strong> Tiempo de respuesta (latencia), pérdida de paquetes</li>
+                                    <li>✅ Primera herramienta para diagnosticar problemas de red</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>2. TRACEROUTE / TRACERT - Rastrear Ruta</strong></p>
+                            <div class="bg-blue-50 p-3 rounded border-l-4 border-blue-500">
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Qué hace:</strong> Muestra todos los routers (saltos) por los que pasa un paquete</li>
+                                    <li><strong>Uso:</strong> <code class="bg-gray-800 text-cyan-400 px-2 py-1 rounded">tracert google.com</code> (Windows) o <code class="bg-gray-800 text-cyan-400 px-2 py-1 rounded">traceroute google.com</code> (Linux/Mac)</li>
+                                    <li><strong>Info que da:</strong> IP de cada router, tiempo de cada salto</li>
+                                    <li>✅ Útil para encontrar dónde se "pierde" la conexión</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>3. IPCONFIG / IFCONFIG - Ver Configuración</strong></p>
+                            <div class="bg-purple-50 p-3 rounded border-l-4 border-purple-500">
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Qué hace:</strong> Muestra la configuración de red de tu dispositivo</li>
+                                    <li><strong>Uso:</strong> <code class="bg-gray-800 text-purple-400 px-2 py-1 rounded">ipconfig /all</code> (Windows) o <code class="bg-gray-800 text-purple-400 px-2 py-1 rounded">ifconfig</code> (Linux/Mac)</li>
+                                    <li><strong>Info que da:</strong> IP, máscara, gateway, DNS, MAC</li>
+                                    <li>✅ Esencial para saber la configuración de tu PC</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>4. NSLOOKUP / DIG - Consultar DNS</strong></p>
+                            <div class="bg-yellow-50 p-3 rounded border-l-4 border-yellow-500">
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Qué hace:</strong> Consulta servidores DNS para resolver nombres a IPs</li>
+                                    <li><strong>Uso:</strong> <code class="bg-gray-800 text-yellow-400 px-2 py-1 rounded">nslookup google.com</code></li>
+                                    <li><strong>Info que da:</strong> IP asociada a un dominio, servidor DNS usado</li>
+                                    <li>✅ Útil para diagnosticar problemas de resolución de nombres</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>5. NETSTAT - Conexiones Activas</strong></p>
+                            <div class="bg-red-50 p-3 rounded border-l-4 border-red-500">
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Qué hace:</strong> Muestra todas las conexiones de red activas</li>
+                                    <li><strong>Uso:</strong> <code class="bg-gray-800 text-red-400 px-2 py-1 rounded">netstat -an</code></li>
+                                    <li><strong>Info que da:</strong> Puertos abiertos, conexiones establecidas, IPs remotas</li>
+                                    <li>✅ Útil para ver qué programas están usando la red</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>B. HERRAMIENTAS GRÁFICAS:</strong></p>
+
+                            <p><strong>6. WIRESHARK - Analizador de Paquetes</strong></p>
+                            <div class="bg-indigo-50 p-4 rounded-lg border-2 border-indigo-400">
+                                <p class="font-bold text-indigo-900">🦈 El "Microscopio" de las Redes</p>
+                                <ul class="list-disc pl-6 text-sm space-y-1 mt-2">
+                                    <li><strong>Qué hace:</strong> Captura y analiza TODO el tráfico de red en tiempo real</li>
+                                    <li><strong>Características:</strong>
+                                        <ul class="list-disc pl-6 mt-1">
+                                            <li>Ve cada paquete: headers, contenido, protocolos</li>
+                                            <li>Filtros avanzados (ej: solo HTTP, solo a una IP)</li>
+                                            <li>Reconstruye conversaciones completas</li>
+                                        </ul>
+                                    </li>
+                                    <li>✅ <strong>Uso profesional:</strong> Debugging, seguridad, aprendizaje</li>
+                                    <li>✅ <strong>Gratuito y Open Source</strong></li>
+                                    <li>⚠️ Requiere permisos de administrador</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>7. Cisco Packet Tracer - Simulador de Redes</strong></p>
+                            <div class="bg-cyan-50 p-3 rounded border-l-4 border-cyan-500">
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li><strong>Qué hace:</strong> Simula redes completas sin hardware real</li>
+                                    <li>✅ Podés armar redes con routers, switches, PCs virtuales</li>
+                                    <li>✅ Configurar dispositivos Cisco (comandos IOS)</li>
+                                    <li>✅ Ver cómo viajan los paquetes en tiempo real</li>
+                                    <li>🎓 Gratuito para estudiantes del curso Cisco CCNA</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>C. SISTEMAS OPERATIVOS DE RED:</strong></p>
+
+                            <p><strong>8. Cisco IOS - Router Operating System</strong></p>
+                            <div class="bg-gray-100 p-3 rounded border-l-4 border-gray-500">
+                                <ul class="list-disc pl-6 text-sm space-y-1">
+                                    <li>Sistema operativo de routers y switches Cisco</li>
+                                    <li>Se configura por línea de comandos (CLI)</li>
+                                    <li>Es el más usado en empresas y certificaciones (CCNA)</li>
+                                </ul>
+                            </div>
+
+                            <p><strong>RESUMEN DE COMANDOS ESENCIALES:</strong></p>
+                            <div class="bg-gray-800 text-green-400 p-4 rounded-lg font-mono text-sm">
+                                <p># Probar conectividad:</p>
+                                <p>ping 8.8.8.8</p>
+                                <p class="mt-2"># Ver ruta de paquetes:</p>
+                                <p>tracert google.com</p>
+                                <p class="mt-2"># Ver tu IP:</p>
+                                <p>ipconfig (Windows) / ifconfig (Linux)</p>
+                                <p class="mt-2"># Ver conexiones activas:</p>
+                                <p>netstat -an</p>
+                                <p class="mt-2"># Consultar DNS:</p>
+                                <p>nslookup google.com</p>
+                            </div>
+                        `,
+                        example: `
+                            <p><strong>Ejemplo Real - Diagnóstico de Problema de Internet:</strong></p>
+                            <p>Situación: No podés entrar a Instagram.</p>
+                            <ol class="list-decimal pl-6 space-y-2">
+                                <li><strong>Paso 1:</strong> <code class="bg-gray-200 px-2 py-1 rounded">ping 8.8.8.8</code> → Si funciona, tu conexión a Internet anda.</li>
+                                <li><strong>Paso 2:</strong> <code class="bg-gray-200 px-2 py-1 rounded">ping instagram.com</code> → Si falla, puede ser problema de DNS.</li>
+                                <li><strong>Paso 3:</strong> <code class="bg-gray-200 px-2 py-1 rounded">nslookup instagram.com</code> → Verificás si resuelve la IP.</li>
+                                <li><strong>Paso 4:</strong> <code class="bg-gray-200 px-2 py-1 rounded">tracert instagram.com</code> → Ves dónde se "pierde" la conexión.</li>
+                            </ol>
+                            <p class="mt-2"><strong>Conclusión:</strong> Si 8.8.8.8 funciona pero instagram.com no, el problema puede ser del DNS de tu proveedor o que Instagram esté bloqueado.</p>
+                        `,
+                        code: `# Script Python - Ping múltiple
+import subprocess
+import platform
+
+def hacer_ping(host):
+    param = '-n' if platform.system().lower() == 'windows' else '-c'
+    command = ['ping', param, '1', host]
+    
+    try:
+        output = subprocess.check_output(command, timeout=5)
+        return True
+    except:
+        return False
+
+# Lista de hosts a probar
+hosts = ['8.8.8.8', 'google.com', 'facebook.com']
+
+print("🔍 Probando conectividad...\\n")
+for host in hosts:
+    estado = "✅ Online" if hacer_ping(host) else "❌ Offline"
+    print(f"{host}: {estado}")`,
+                        image_query: "Captura de pantalla de Wireshark mostrando análisis de paquetes HTTP y TCP",
+                        interactive: "Abrí la terminal de tu compu y hacé ping a google.com. ¿Cuánto es el tiempo de respuesta (ms)? ¿Es estable o varía mucho? Ahora hacé ping a 8.8.8.8. ¿Cambia el tiempo?",
+                        funFact: "Wireshark es tan poderoso que se usa para investigar crímenes cibernéticos. Puede capturar contraseñas enviadas sin cifrar, ver emails completos y reconstruir archivos descargados. Por eso es crucial usar HTTPS (con candadito) en sitios web."
+                    }
                 }
-            },
+            }
         };
 
+        // =====================================
+        // FUNCIONES PRINCIPALES
+        // =====================================
         const navContainer = document.getElementById('nav-container');
-        const contentContainer = document.getElementById('content-container');
+        const welcomeScreen = document.getElementById('welcome-screen');
         const topicContentDiv = document.getElementById('topic-content');
-        const contentTitle = document.getElementById('content-title');
-        const contentIntro = document.getElementById('content-intro');
-        const topicText = document.getElementById('topic-text');
-        const topicChallenge = document.getElementById('topic-challenge');
-        const topicImageContainer = document.getElementById('topic-image-container');
-
+        const backBtn = document.getElementById('back-to-top');
+        
         let currentActiveElement = null;
 
-        // Función para renderizar el menú
+        // Renderizar Menú de Navegación
         function renderNav() {
             for (const categoryKey in learningContent) {
                 const category = learningContent[categoryKey];
                 
-                // Título de la Categoría Principal
-                const categoryHeader = document.createElement('h2');
-                categoryHeader.className = 'text-gray-300 uppercase tracking-wider text-sm font-bold mt-4 mb-2';
-                categoryHeader.textContent = category.title;
+                // Header de Categoría
+                const categoryHeader = document.createElement('div');
+                categoryHeader.className = 'mt-6 mb-2';
+                categoryHeader.innerHTML = `
+                    <h2 class="text-cyan-300 uppercase tracking-wider text-xs font-bold px-4 py-2 bg-cyan-900/30 rounded">
+                        ${category.title}
+                    </h2>
+                `;
                 navContainer.appendChild(categoryHeader);
 
-                // Lista de Subtemas
+                // Subtemas
                 for (const subtopicKey in category.subtopics) {
                     const subtopic = category.subtopics[subtopicKey];
                     const link = document.createElement('a');
                     link.href = '#';
-                    link.className = 'flex items-center px-4 py-2 rounded-lg text-sm text-gray-200 hover:bg-gray-700';
-                    link.textContent = subtopic.title;
+                    link.className = 'nav-link flex items-center px-4 py-3 rounded-lg text-sm text-gray-200 hover:bg-cyan-900/20 transition-all';
+                    link.innerHTML = `
+                        <span class="mr-3 text-xl">${subtopic.icon || '📄'}</span>
+                        <span>${subtopic.title}</span>
+                    `;
                     link.dataset.category = categoryKey;
                     link.dataset.topic = subtopicKey;
                     link.addEventListener('click', (e) => {
@@ -209,47 +1634,108 @@
             }
         }
 
-        // Función para cargar el contenido del tema seleccionado
+        // Cargar Contenido del Tema
         function loadContent(categoryKey, topicKey, clickedElement) {
             const topicData = learningContent[categoryKey].subtopics[topicKey];
 
-            // 1. Marcar el elemento activo en el menú
+            // Marcar activo
             if (currentActiveElement) {
                 currentActiveElement.classList.remove('active-topic');
             }
             clickedElement.classList.add('active-topic');
             currentActiveElement = clickedElement;
 
-            // 2. Mostrar el área de contenido si estaba oculta
-            if (topicContentDiv.classList.contains('hidden')) {
-                topicContentDiv.classList.remove('hidden');
-                contentIntro.classList.add('hidden');
+            // Ocultar bienvenida, mostrar contenido
+            welcomeScreen.classList.add('hidden');
+            topicContentDiv.classList.remove('hidden');
+            topicContentDiv.classList.add('fade-in');
+
+            // Actualizar contenido
+            document.getElementById('topic-icon').textContent = topicData.icon || '📄';
+            document.getElementById('content-title').textContent = topicData.title;
+            document.getElementById('topic-subtitle').textContent = topicData.subtitle || '';
+            
+            // Badges
+            const badgesContainer = document.getElementById('topic-badges');
+            badgesContainer.innerHTML = '';
+            if (topicData.badges) {
+                topicData.badges.forEach(badge => {
+                    const badgeEl = document.createElement('span');
+                    badgeEl.className = 'badge badge-protocol';
+                    badgeEl.textContent = badge;
+                    badgesContainer.appendChild(badgeEl);
+                });
             }
 
-            // 3. Actualizar el Título
-            contentTitle.textContent = topicData.title;
+            // Contenido principal
+            document.getElementById('topic-text').innerHTML = topicData.content;
 
-            // 4. Actualizar el Contenido (Texto)
-            // Se corrige el error eliminando la expresión regular inválida.
-            topicText.innerHTML = topicData.content; 
+            // Ejemplo (opcional)
+            const exampleSection = document.getElementById('example-section');
+            if (topicData.example) {
+                exampleSection.classList.remove('hidden');
+                document.getElementById('topic-example').innerHTML = topicData.example;
+            } else {
+                exampleSection.classList.add('hidden');
+            }
 
-            // 5. Actualizar la Imagen Ilustrativa (usando image_query como fuente)
+            // Código (opcional)
+            const codeSection = document.getElementById('code-section');
+            if (topicData.code) {
+                codeSection.classList.remove('hidden');
+                document.getElementById('topic-code').textContent = topicData.code;
+            } else {
+                codeSection.classList.add('hidden');
+            }
+
+            // Diagrama
+            const imageContainer = document.getElementById('topic-image-container');
             if (topicData.image_query) {
-                 topicImageContainer.innerHTML = `
-                    <div class="p-6 bg-white rounded-lg border-2 border-blue-200 border-dashed flex flex-col items-center">
-                        <span class="text-lg font-mono text-gray-800">Diagrama conceptual de:</span>
-                        <p class="mt-2 text-base font-semibold text-blue-600">${topicData.image_query}</p>
+                imageContainer.innerHTML = `
+                    <div class="text-center">
+                        <svg class="w-16 h-16 mx-auto mb-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        <p class="text-gray-700 font-semibold text-lg mb-2">Diagrama Conceptual:</p>
+                        <p class="text-cyan-700 font-mono text-sm">${topicData.image_query}</p>
+                        <p class="text-xs text-gray-500 mt-3 italic">
+                            💡 En un entorno real, acá se mostraría un diagrama interactivo. 
+                            Buscá esta imagen en Google Images para verla en detalle.
+                        </p>
                     </div>
                 `;
-            } else {
-                topicImageContainer.innerHTML = `<p>No hay diagrama específico para este tema, ¡pero el contenido está buenísimo igual!</p>`;
             }
 
-            // 6. Actualizar la Pregunta Interactiva
-            topicChallenge.textContent = topicData.interactive;
+            // Desafío
+            document.getElementById('topic-challenge').textContent = topicData.interactive;
+
+            // Fun Fact (opcional)
+            const funFactSection = document.getElementById('fun-fact-section');
+            if (topicData.funFact) {
+                funFactSection.classList.remove('hidden');
+                document.getElementById('fun-fact').textContent = topicData.funFact;
+            } else {
+                funFactSection.classList.add('hidden');
+            }
+
+            // Scroll arriba
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Inicializar la aplicación
+        // Botón Volver Arriba
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backBtn.classList.remove('hidden');
+            } else {
+                backBtn.classList.add('hidden');
+            }
+        });
+
+        backBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Inicializar
         document.addEventListener('DOMContentLoaded', () => {
             renderNav();
         });
